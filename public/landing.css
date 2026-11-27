@@ -76,3 +76,58 @@
   .landing *, .nav-options, .nav-toggle span { animation: none !important; transition: none !important; }
   .landing .card:hover { transform: none; }
 }
+
+.landing #home-path { background: #fbf8ef; }
+.landing #home-path h2 { max-width: none; margin-bottom: 12px; }
+.roadmap-grid { gap: 20px; }
+.roadmap-card {
+  --roadmap-tile: #e4eddb;
+  --roadmap-accent: #204c3c;
+  background: #fffefa;
+  padding: clamp(18px, 2.5vw, 30px);
+}
+.roadmap-card.global { --roadmap-tile: #fbe8b2; --roadmap-accent: #674b16; }
+.roadmap-card.debate { --roadmap-tile: #f3ded6; --roadmap-accent: #693c34; }
+.roadmap-card.teachers { --roadmap-tile: #deebf5; --roadmap-accent: #224b64; }
+.roadmap-art {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: clamp(79px, 8.3vw, 100px);
+  padding: 14px 21px;
+  border-radius: 12px;
+  color: var(--roadmap-accent);
+  background: var(--roadmap-tile);
+}
+.roadmap-art i {
+  display: grid;
+  place-items: center;
+  min-width: clamp(43px, 4.5vw, 54px);
+  height: clamp(46px, 5vw, 59px);
+  padding: 0 7px;
+  background: #fffefa;
+  border: 1px solid currentColor;
+  border-radius: 9px;
+  font-size: clamp(1.5rem, 2.7vw, 1.95rem);
+  font-weight: 850;
+  font-style: normal;
+  transform: rotate(-7deg);
+}
+.roadmap-art i:nth-child(2) { transform: rotate(8deg); }
+.roadmap-card.global .roadmap-art i { border-radius: 3px 10px 10px 3px; border-left-width: 5px; }
+.roadmap-card.debate .roadmap-art i { border-radius: 45% 45% 45% 12%; }
+.landing .roadmap-card h3 { font-size: clamp(1.4rem, 2.65vw, 1.9rem); margin: 20px 0 10px; }
+.roadmap-card p { color: var(--muted); }
+.roadmap-levels { display: flex; flex-wrap: wrap; gap: 9px; }
+.roadmap-levels a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 5px 11px;
+  border: 1px solid #8fa995;
+  border-radius: 7px;
+  text-decoration: none;
+  font-weight: 740;
+}
+.roadmap-levels a:hover { background: var(--roadmap-tile); }
+.roadmap-link { font-weight: 750; text-underline-offset: 4px; }

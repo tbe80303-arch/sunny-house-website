@@ -56,15 +56,6 @@ h1.motion-enter, h2.motion-enter, .landing .hero h1 { animation: sunny-title .62
 }
 
 @media (max-width: 650px) {
-  .landing .course-track {
-    grid-auto-flow: column;
-    grid-template-columns: none;
-    grid-auto-columns: min(82%, 320px);
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    padding: 4px 4px 12px;
-  }
-  .course-track > .card { scroll-snap-align: start; }
   .back-to-top { font-size: .875rem; }
 }
 

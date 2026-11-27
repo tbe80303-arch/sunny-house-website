@@ -60,9 +60,9 @@ function requireLogin(destination) {
 function needPlacement() {
   return '<p>Hãy hoàn thành bài đầu vào dành cho nhóm của bạn để mở các bài khác.</p>'+button('start','Làm bài đầu vào','gold');
 }
-function stagesGrid(track=false) {
+function stagesGrid() {
   const notes=['Làm quen từ và câu ngắn.','Nghe hội thoại và đọc mô tả.','Đọc hiểu câu chuyện và nghe lấy chi tiết.'];
-  return '<div class="grid'+(track?' course-track':'')+'">'+stages.map((key,i)=>'<article class="card stage"><h3>'+names[key]+'</h3><p>'+notes[i]+'</p>'+button('course/'+key,'Xem khóa học','outline')+'</article>').join('')+'</div>';
+  return '<div class="grid">'+stages.map((key,i)=>'<article class="card stage"><h3>'+names[key]+'</h3><p>'+notes[i]+'</p>'+button('course/'+key,'Xem khóa học','outline')+'</article>').join('')+'</div>';
 }
 function home(anchor) {
   main.innerHTML=`<div class="landing">
@@ -74,18 +74,30 @@ function home(anchor) {
     </div>
     <figure class="figure"><img class="founder-portrait" src="/images/ms-thuy-tesol.webp" alt="Ms Thủy mặc áo tốt nghiệp và cầm bìa chứng chỉ TESOL" width="850" height="830" fetchpriority="high"><figcaption class="nametag">Ms Thủy <span>Founder SUNNY HOUSE</span></figcaption></figure>
   </div><div class="wrap">${credentials}</div></section>
-  <section class="section alternate" id="home-path"><div class="wrap">
-    <h2>Các cấp độ khác nhau, lộ trình học rõ ràng</h2>
-    <p class="intro">Xem nội dung học, thời lượng và học phí để chọn khóa phù hợp.</p>
-    <h3>Chương trình Cambridge</h3>
-    ${stagesGrid(true)}
-    <div class="tabs">
-      <h3>Các lộ trình khác</h3>
-      <div class="grid course-track">
-        ${globalSuccessCard()}
-        ${courseCard('kids-debate','Luyện nêu ý kiến, đưa lý do và tranh biện theo đội bằng tiếng Anh.')}
-        ${courseCard('conversation','Thực hành hướng dẫn lớp học và trao đổi với phụ huynh bằng tiếng Anh.')}
-      </div>
+  <section class="section" id="home-path" aria-labelledby="home-path-title"><div class="wrap">
+    <h2 id="home-path-title">Chọn lộ trình học phù hợp</h2>
+    <p class="intro">Xem nội dung, thời lượng và học phí của từng chương trình.</p>
+    <div class="grid two roadmap-grid">
+      <article class="card roadmap-card cambridge">
+      <div class="roadmap-art" aria-hidden="true"><i>A</i><i>B</i><i>C</i></div>
+      <h3>Cambridge Young Learners</h3><p>Từ câu ngắn đến kể chuyện, luyện bốn kỹ năng theo từng cấp độ Cambridge.</p>
+      <div class="roadmap-levels"><a href="#course/starters">Pre-A1 Starters</a><a href="#course/movers">A1 Movers</a><a href="#course/flyers">A2 Flyers</a></div>
+      </article>
+      <article class="card roadmap-card global">
+      <div class="roadmap-art" aria-hidden="true"><i>6</i><i>7</i></div>
+      <h3>Global Success</h3><p>Củng cố từ vựng, ngữ pháp và phát âm theo chương trình lớp 6 hoặc lớp 7.</p>
+      <a class="roadmap-link" href="#course/global-success">Chọn lớp Global Success</a>
+      </article>
+      <article class="card roadmap-card debate">
+      <div class="roadmap-art" aria-hidden="true"><i>“</i><i>”</i></div>
+      <h3>Kids Debate</h3><p>Luyện nêu ý kiến, đưa ví dụ và phản biện lịch sự bằng tiếng Anh.</p>
+      <a class="roadmap-link" href="#course/kids-debate">Xem lộ trình Kids Debate</a>
+      </article>
+      <article class="card roadmap-card teachers">
+      <div class="roadmap-art" aria-hidden="true"><i>Aa</i></div>
+      <h3>Tiếng Anh giao tiếp cho giáo viên</h3><p>Thực hành hướng dẫn lớp học, phản hồi bài và trao đổi với phụ huynh.</p>
+      <a class="roadmap-link" href="#course/conversation">Xem lộ trình cho giáo viên</a>
+      </article>
     </div>
   </div></section>
   <section class="section"><div class="wrap"><p class="landing-label">BÀI ĐẦU VÀO</p><h2>Bắt đầu từ đâu?</h2><div class="grid">
