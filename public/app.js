@@ -79,9 +79,8 @@ function home(anchor) {
     ${stagesGrid()}
     <div class="tabs">
       <h3>Các lộ trình khác</h3>
-      <div class="grid two">
-        ${courseCard('global-6','Học từ vựng, ngữ pháp và phát âm theo 12 chủ đề lớp 6.')}
-        ${courseCard('global-7','Học theo 12 chủ đề lớp 7 và ôn tập sau mỗi ba Unit.')}
+      <div class="grid">
+        ${globalSuccessCard()}
         ${courseCard('kids-debate','Luyện nêu ý kiến, đưa lý do và tranh biện theo đội bằng tiếng Anh.')}
         ${courseCard('conversation','Thực hành hướng dẫn lớp học và trao đổi với phụ huynh bằng tiếng Anh.')}
       </div>
@@ -120,6 +119,10 @@ function courseCard(key,description='') {
     (description?'<p>'+esc(description)+'</p>':'')+
     button('course/'+key,'Xem khóa học','outline')+'</article>';
 }
+function globalSuccessCard() {
+  return '<article class="card stage"><h3>Global Success</h3><p>Lộ trình riêng cho lớp 6 và lớp 7.</p>'+
+    button('course/global-success','Chọn lớp','outline')+'</article>';
+}
 function courses(key) {
   if(key==='global-success'){
     main.innerHTML=section('Global Success','<div class="grid two">'+courseCard('global-6')+courseCard('global-7')+'</div>',
@@ -129,8 +132,7 @@ function courses(key) {
   if(!key){
     main.innerHTML=section('Khóa học tại SUNNY HOUSE',stagesGrid()+
       '<div class="tabs grid">'+courseCard('conversation')+
-      '<article class="card stage"><h3>Global Success</h3><p>Lộ trình riêng cho lớp 6 và lớp 7.</p>'+
-      button('course/global-success','Chọn lớp','outline')+'</article>'+courseCard('kids-debate')+
+      globalSuccessCard()+courseCard('kids-debate')+
       '<article class="card"><h3>Kèm 1–1</h3>'+button('consult/one','Nhận tư vấn','outline')+'</article></div>');
     return;
   }
