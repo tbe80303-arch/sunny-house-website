@@ -1,0 +1,20 @@
+{
+  "name": "sunny-house",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node scripts/check.mjs",
+    "dev": "node scripts/dev.mjs",
+    "db:local": "wrangler d1 migrations apply DB --local",
+    "content": "node scripts/content.mjs",
+    "test:integration": "node scripts/integration.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "wrangler": "^4.168.0"
+  }
+}

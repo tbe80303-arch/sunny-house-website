@@ -1,0 +1,21 @@
+starters|Con vật|cat|mèo|🐱|The cat is on the chair.
+starters|Con vật|dog|chó|🐶|The dog is small.
+starters|Con vật|bird|chim|🐦|I see a bird.
+starters|Con vật|duck|vịt|🦆|The duck is yellow.
+starters|Con vật|fish|cá|🐟|The fish can swim.
+starters|Con vật|frog|ếch|🐸|The frog can jump.
+starters|Đồ vật|ball|quả bóng|⚽|This is my ball.
+starters|Đồ vật|train|tàu hỏa|🚂|The train is long.
+starters|Đồ vật|kite|diều|🪁|My kite is red.
+movers|Địa điểm|library|thư viện|📚|I borrow books from the library.
+movers|Địa điểm|market|chợ|🛒|We buy fruit at the market.
+movers|Địa điểm|station|nhà ga|🚉|The bus stops near the station.
+movers|Thời gian|noon|giữa trưa|☀️|We meet at noon.
+movers|Thời gian|before|trước khi||I read before I go to bed.
+movers|Thời gian|after|sau khi||We can swim after lunch.
+flyers|Chỉ đường|opposite|đối diện||The stairs are opposite the shop.
+flyers|Chỉ đường|beside|bên cạnh||The café is beside the bridge.
+flyers|Chỉ đường|beneath|bên dưới||The tunnel runs beneath the river.
+flyers|Thiên nhiên|tide|thủy triều|🌊|We waited until the tide went down.
+flyers|Thiên nhiên|steep|dốc|⛰️|The path is too steep for our bikes.
+flyers|Thiên nhiên|wildlife|động vật hoang dã|🦉|Please avoid disturbing the wildlife.
