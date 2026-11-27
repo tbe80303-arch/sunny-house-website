@@ -57,7 +57,7 @@ function home(anchor) {
   main.innerHTML=`<div class="landing">
   <section class="hero"><div class="wrap landing-hero">
     <div class="hero-copy"><p class="hero-label">SUNNY HOUSE · TIẾNG ANH CAMBRIDGE</p>
-      <h1>Học tiếng Anh<br> <em>theo lộ trình</em><br> phù hợp</h1>
+      <h1>Vững từng bước, <em>tự tin nói tiếng Anh</em></h1>
       <p>Cùng Ms Thủy xác định điểm bắt đầu cho con, chọn lộ trình Cambridge và luyện tiếng Anh qua bài nghe, từ vựng và trò chơi.</p>
       <div class="actions">${button('start','Làm bài đầu vào miễn phí','gold')}${button('home/path','Xem lộ trình','outline')}</div>
     </div>
