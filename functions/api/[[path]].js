@@ -135,7 +135,7 @@ async function route(req,env,segments) {
     const data=await body();
     const phone=String(data.phone||'').replace(/[ .()-]/g,'');
     need(string(data.name,100)&&string(data.group,60)&&string(data.goal,800)&&/^(?:\+84|0)\d{9,10}$/.test(phone)
-      &&['starters','movers','flyers','undecided','one','conversation'].includes(data.course),'Kiểm tra thông tin tư vấn.');
+      &&['starters','movers','flyers','undecided','one','conversation','global-6','global-7','kids-debate'].includes(data.course),'Kiểm tra thông tin tư vấn.');
     const latest=user?await one('SELECT result FROM results WHERE user_id=? AND kind=? ORDER BY created_at DESC LIMIT 1',user.id,'placement'):null;
     const result=latest?JSON.parse(latest.result):null;
     const payload={name:data.name.trim(),group:data.group.trim(),phone,goal:data.goal.trim(),course:data.course,
@@ -257,6 +257,10 @@ async function route(req,env,segments) {
   function resultView(paper,stored) {
     const result=JSON.parse(stored.result);
     if(paper.kind==='assigned'&&(paper.release===null||paper.release>now))delete result.items;
+    if(paper.kind==='practice'&&result.items) {
+      const explanations=new Map(paper.questions.map(question=>[question.prompt,question.explanation]));
+      result.items=result.items.map(item=>({...item,explanation:explanations.get(item.prompt)??item.explanation}));
+    }
     return {...result,review:stored.review&&JSON.parse(stored.review)};
   }
   if(scope==='papers') {
