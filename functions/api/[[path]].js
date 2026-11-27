@@ -19,6 +19,14 @@ async function passwordHash(password,salt) {
   const key=await crypto.subtle.importKey('raw',encoder.encode(password),'PBKDF2',false,['deriveBits']);
   return hex(await crypto.subtle.deriveBits({name:'PBKDF2',hash:'SHA-256',salt:encoder.encode(salt),iterations:100000},key,256));
 }
+function onlineLink(data) {
+  if(data.onlineUrl===undefined||data.onlineUrl==='')return null;
+  need(string(data.onlineUrl,2048)&&['video','meeting'].includes(data.onlineType),'Chọn loại liên kết và nhập URL hợp lệ.');
+  let url;
+  try { url=new URL(data.onlineUrl); } catch { need(false,'Hãy nhập URL bắt đầu bằng https://.'); }
+  need(url.protocol==='https:'&&!url.username&&!url.password,'Hãy nhập URL HTTPS không chứa thông tin đăng nhập.');
+  return {url:url.href,type:data.onlineType};
+}
 function equals(a,b) {
   if(a.length!==b.length)return false;
   let diff=0;
@@ -192,7 +200,7 @@ async function route(req,env,segments) {
   if(scope==='assigned'&&method==='GET') {
     await prepareClassArchive();
     return json(await all(`SELECT a.id,a.title,c.title class_name,c.level,a.created_at,
-      CASE WHEN r.paper IS NOT NULL THEN 'Đã nộp' WHEN d.paper IS NOT NULL THEN 'Đang làm' ELSE 'Chưa làm' END status
+      CASE WHEN r.paper IS NOT NULL THEN 'Đã nộp' WHEN d.paper IS NOT NULL THEN 'Đang làm' WHEN json_array_length(a.paper,'$.questions')=0 THEN 'Tài liệu online' ELSE 'Chưa làm' END status
       FROM assignments a JOIN classes c ON a.class_id=c.id JOIN enrollment e ON e.class_id=c.id
       LEFT JOIN drafts d ON d.paper=('assigned-'||a.id) AND d.user_id=e.student
       LEFT JOIN results r ON r.paper=('assigned-'||a.id) AND r.user_id=e.student
@@ -260,6 +268,7 @@ async function route(req,env,segments) {
       return json({paper:publicPaper(paper),draft:draftRow?{answers:JSON.parse(draftRow.answers),revision:draftRow.revision}:null,result:stored?resultView(paper,stored):null});
     }
     if(method==='POST'&&['draft','submit'].includes(action)) {
+      need(paper.questions.length>0,'Buổi học này không yêu cầu nộp bài.');
       if(stored)return json({result:resultView(paper,stored)});
       const {answers,revision}=await body();
       need(Array.isArray(answers)&&answers.length===paper.questions.length&&answers.every((value,i)=>value===null||(string(value,2000)&&(!paper.questions[i].options||paper.questions[i].options.includes(value)))));
@@ -349,6 +358,7 @@ async function route(req,env,segments) {
       const activity=await one('SELECT MAX(updated_at) date FROM drafts WHERE user_id=?',action);
       const missing=await all(`SELECT a.title,c.title class_name FROM assignments a JOIN classes c ON c.id=a.class_id
         JOIN enrollment e ON e.class_id=c.id WHERE c.teacher=? AND e.student=? AND ${activeClass} AND a.published=1 AND (a.student IS NULL OR a.student=e.student)
+        AND json_array_length(a.paper,'$.questions')>0
         AND NOT EXISTS(SELECT 1 FROM results r WHERE r.user_id=e.student AND r.paper=('assigned-'||a.id))`,user.id,action);
       return json({student,results,missing,lastActivity:[activity.date,results[0]?.created_at].filter(Boolean).sort().at(-1)||null});
     }
@@ -370,6 +380,8 @@ async function route(req,env,segments) {
         &&(q.open===true||string(q.answer,300))&&(q.passage===undefined||string(q.passage,2000))
         &&(q.explanation===undefined||string(q.explanation,800))&&(q.transcript===undefined||string(q.transcript,3000))));
       const lesson=base?{...base,questions:[...base.questions]}:{level:cls.level,questions:[]};
+      const link=onlineLink(data);
+      if(link)lesson.onlineLink=link;
       for(const q of custom) {
         let audio=null;
         if(q.file) {
@@ -386,6 +398,10 @@ async function route(req,env,segments) {
       if(data.id) {
         const prior=await ownedAssignment(aid);
         need(!prior.published&&prior.class_id===cls.id,'Chỉ chỉnh sửa được bản nháp.',409);
+        if(data.onlineUrl===undefined) {
+          const previousLink=JSON.parse(prior.paper).onlineLink;
+          if(previousLink)lesson.onlineLink=previousLink;
+        }
         const changed=await run('UPDATE assignments SET title=?,paper=?,student=? WHERE id=? AND published=0',data.title,JSON.stringify(lesson),data.student||null,aid);
         need(changed.meta.changes,'Buổi học đã xuất bản.',409);
       } else await run('INSERT INTO assignments(id,class_id,student,title,paper) VALUES(?,?,?,?,?)',aid,cls.id,data.student||null,data.title,JSON.stringify(lesson));
@@ -418,10 +434,22 @@ async function route(req,env,segments) {
       }
       return json({id:fid});
     }
+    if(id==='online-link'&&method==='POST') {
+      const a=await ownedAssignment(action);
+      need(a.published,'Lưu liên kết trong bản nháp trước khi xuất bản.',409);
+      const link=onlineLink(await body());
+      if(link) {
+        await run("UPDATE assignments SET paper=json_set(paper,'$.onlineLink',json(?)) WHERE id=?",JSON.stringify(link),a.id);
+      } else {
+        need(JSON.parse(a.paper).questions.length>0,'Buổi học này cần giữ một liên kết hoặc có câu hỏi.');
+        await run("UPDATE assignments SET paper=json_remove(paper,'$.onlineLink') WHERE id=?",a.id);
+      }
+      return json({});
+    }
     if(id==='publish'&&method==='POST') {
       const a=await ownedAssignment(action);
-      need(JSON.parse(a.paper).questions.length>0,'Thêm câu hỏi trước khi xuất bản.');
-      await run('UPDATE assignments SET published=1 WHERE id=?',a.id);
+      const published=await run("UPDATE assignments SET published=1 WHERE id=? AND (json_array_length(paper,'$.questions')>0 OR json_type(paper,'$.onlineLink')='object')",a.id);
+      need(published.meta.changes,'Thêm câu hỏi hoặc liên kết trước khi xuất bản.');
       return json({});
     }
     if(id==='release'&&method==='POST') {

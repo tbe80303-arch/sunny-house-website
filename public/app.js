@@ -180,6 +180,20 @@ function practice(key) {
 function fileMarkup(files=[]) {
   return files.map(file=>file.type.startsWith('audio/')?'<div><p>'+esc(file.name)+'</p>'+audio('/api/files/'+file.id,file.name)+'</div>':file.type.startsWith('image/')?'<img class="file-preview" src="/api/files/'+esc(file.id)+'" alt="'+esc(file.name)+'">':'<a href="/api/files/'+esc(file.id)+'">'+esc(file.name)+'</a>').join('');
 }
+function onlineLinkMarkup(link) {
+  if(!link)return '';
+  let url;
+  try { url=new URL(link.url); } catch { return ''; }
+  if(url.protocol!=='https:'||url.username||url.password)return '';
+  const isMeeting=link.type==='meeting';
+  return `<article class="card tabs"><h3>${isMeeting?'Lớp học trực tuyến':'Video bài học'}</h3>
+    <p>${esc(url.hostname)} · Mở trong tab mới</p>
+    <a class="btn gold" href="${esc(url.href)}" target="_blank" rel="noopener noreferrer">${isMeeting?'Vào lớp online':'Xem video'}</a></article>`;
+}
+function onlineLinkFields(link) {
+  return `<label>Link video / lớp học online<input name="onlineUrl" type="url" maxlength="2048" placeholder="https://…" value="${esc(link?.url)}"></label>
+    <label>Loại liên kết<select name="onlineType">${select(['video','meeting'],{video:'Video bài học',meeting:'Lớp học online'},link?.type||'video')}</select></label>`;
+}
 function questionView(q,i,value,preview=false) {
   return `<article class="card question"><span class="pill">${esc(q.skill)} · Câu ${i+1}</span>${q.audio?audio(q.audio,'Nghe câu '+(i+1)):''}
   ${q.passage?'<p lang="en">'+esc(q.passage)+'</p>':''}<h3>${esc(q.prompt)}</h3>
@@ -190,7 +204,7 @@ function skillScores(result) {
 }
 function displayResult(p,result) {
   if(p.kind==='placement')lastResult=result;
-  main.innerHTML=section('Kết quả · '+esc(p.title),`<article class="card">${skillScores(result)}
+  main.innerHTML=section('Kết quả · '+esc(p.title),`${onlineLinkMarkup(p.onlineLink)}<article class="card">${skillScores(result)}
   ${result.recommendation?'<h3>Lộ trình đề xuất: '+esc(state.user?.route||result.recommendation)+'</h3><p>'+esc(result.reason)+'</p>':''}
   ${result.revisionTopics?.length?'<p>Nên ôn thêm: '+esc(result.revisionTopics.join(', '))+'.</p>':''}
   ${result.review?'<p>Giáo viên chấm '+result.review.score+'/10 · '+esc(result.review.comment)+'</p>':''}
@@ -216,6 +230,11 @@ async function paper(id,stamp) {
   if(stamp!==view)return;
   const key='sunny-draft:'+state.user.id+':'+id;
   if(result){localStorage.removeItem(key);displayResult(p,result);return;}
+  if(!p.questions.length) {
+    main.innerHTML=section(esc(p.title),onlineLinkMarkup(p.onlineLink)+fileMarkup(p.files)+
+      '<p>Buổi học này không yêu cầu nộp bài.</p>'+button('assigned','Quay lại danh sách','outline'));
+    return;
+  }
   let revision=draft?.revision??0;
   let answers=draft?.answers??p.questions.map(()=>null);
   let dirty=false;
@@ -229,7 +248,7 @@ async function paper(id,stamp) {
   <p class="intro">${esc(names[p.level]||'')} · ${p.questions.length} câu · ${esc([...new Set(p.questions.map(q=>q.skill))].join(' và '))}${p.kind==='practice'||(p.kind==='placement'&&p.level==='preschool')?' · khoảng 5–8 phút':''}</p>
   ${p.level==='preschool'&&p.kind==='placement'?preschoolIntro():''}
   ${p.objective?'<p>'+esc(p.objective)+'</p>':''}${p.vocab?'<p>Từ vựng: '+p.vocab.map(esc).join(', ')+'</p>':''}
-  ${fileMarkup(p.files)}<div class="questions">${p.questions.map((q,i)=>questionView(q,i,answers[i])).join('')}</div>
+  ${onlineLinkMarkup(p.onlineLink)}${fileMarkup(p.files)}<div class="questions">${p.questions.map((q,i)=>questionView(q,i,answers[i])).join('')}</div>
   ${p.application?'<article class="card"><h3>Vận dụng</h3><p>'+esc(p.application)+'</p></article>':''}
   <div class="actions tabs"><button class="gold" id="submit">Nộp bài</button><p id="progress" role="status"></p></div>`);
   const progress=$('#progress');
@@ -487,12 +506,15 @@ async function teacher(key,id,stamp) {
       <label>Tên buổi<input name="title" value="${esc(a.title)}" maxlength="120" required></label>
       <label>Giao cho<select name="student"><option value="">Cả lớp</option>${select(Object.keys(studentNames),studentNames,a.student)}</select></label>
       <label>Học liệu có sẵn<select name="paperId"><option value="">Tự soạn</option>${select(Object.keys(lessonTitles),lessonTitles,isBase?a.paper.id:'')}</select></label>
+      ${onlineLinkFields(a.paper.onlineLink)}
       <div class="stack" id="question-editor"></div><button class="outline" id="add-question" type="button">Thêm câu hỏi</button><button type="submit">Lưu bản nháp</button>${status}</form></article>
       <article class="card"><h3>Tệp của buổi học</h3><form class="form" id="upload"><label>Ảnh, MP3, WAV hoặc PDF<input name="file" type="file" accept="image/png,image/jpeg,image/webp,audio/mpeg,audio/wav,audio/ogg,audio/mp4,application/pdf" required></label><button type="submit">Tải lên</button>${status}</form><div class="stack">${a.files.map(f=>'<p>'+esc(f.name)+'</p>').join('')}</div>
       <form class="form" id="publish"><button type="submit" class="gold">Xuất bản bản đã lưu</button>${status}</form></article></div>`;
-    main.innerHTML=section(esc(a.title),tools+'<p>'+esc(cls.title)+' · '+(a.published?'Đã xuất bản':'Bản nháp')+'</p>'+(a.published?'':edit)+
+    const publishedLink=a.published?`<article class="card tabs"><h3>Liên kết buổi học</h3>
+      <form class="form" id="edit-online-link">${onlineLinkFields(a.paper.onlineLink)}<button type="submit">Lưu liên kết</button>${status}</form></article>`:'';
+    main.innerHTML=section(esc(a.title),tools+'<p>'+esc(cls.title)+' · '+(a.published?'Đã xuất bản':'Bản nháp')+'</p>'+(a.published?publishedLink:edit)+
       `<article class="card tabs"><h3>Lịch mở đáp án</h3><form class="form" id="release"><label>Mở từ thời điểm (để trống để ẩn)<input name="release" type="datetime-local" value="${date}"></label><button type="submit">Lưu lịch</button>${status}</form></article>
-      <details class="card tabs"><summary>Xem trước dưới góc nhìn học viên</summary>${fileMarkup(a.files)}<div class="questions">${a.paper.questions.map((q,i)=>questionView(q,i,null,true)).join('')}</div>${a.paper.application?'<p>'+esc(a.paper.application)+'</p>':''}</details>
+      <details class="card tabs"><summary>Xem trước dưới góc nhìn học viên</summary>${onlineLinkMarkup(a.paper.onlineLink)}${fileMarkup(a.files)}<div class="questions">${a.paper.questions.map((q,i)=>questionView(q,i,null,true)).join('')}</div>${a.paper.application?'<p>'+esc(a.paper.application)+'</p>':''}</details>
       <h2 class="tabs">Bài nộp</h2><div class="stack">${a.submissions.map(row=>`<article class="card"><h3>${esc(row.name||row.email)}</h3>${skillScores(row.result)}
         ${row.result.items.map((item,i)=>'<p>Câu '+(i+1)+' · '+esc(item.prompt)+' — '+esc(item.selected)+'</p>').join('')}
         <form class="form grading" data-student="${row.user_id}"><label>Điểm giáo viên (0–10)<input name="score" type="number" min="0" max="10" step="0.1" value="${esc(row.review?.score)}" required></label><label>Nhận xét<textarea name="comment" maxlength="4000" required>${esc(row.review?.comment)}</textarea></label><button type="submit">Lưu nhận xét</button>${status}</form></article>`).join('')||'<p>Chưa có bài nộp.</p>'}</div>`);
@@ -528,6 +550,10 @@ async function teacher(key,id,stamp) {
       bindForm($('#upload'),async(data)=>{await api('teacher/files/'+id+'?name='+encodeURIComponent(data.file.name),undefined,data.file);await render();});
       bindForm($('#publish'),async()=>{await api('teacher/publish/'+id,{});await render();});
     }
+    if(a.published)bindForm($('#edit-online-link'),async(data)=>{
+      await api('teacher/online-link/'+id,data);
+      await render();
+    });
     bindForm($('#release'),async(data,message)=>{await api('teacher/release/'+id,{release:data.release?new Date(data.release).getTime():null});writeStatus(message,'Đã lưu lịch.','success');});
     for(const form of main.querySelectorAll('.grading'))bindForm(form,async(data,message)=>{await api('teacher/review/'+id,{...data,score:Number(data.score),student:form.dataset.student});writeStatus(message,'Đã lưu nhận xét.','success');});
     return;
