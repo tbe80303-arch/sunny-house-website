@@ -6,3 +6,7 @@ pages_build_output_dir = "./public"
 binding = "DB"
 database_name = "sunny-house"
 database_id = "814bdd08-a550-4f0e-a06f-695c2b55f46e"
+
+[[env.production.r2_buckets]]
+binding = "FILES"
+bucket_name = "sunny-house-files"
