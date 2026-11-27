@@ -5,14 +5,14 @@ const main=$('#main');
 const names={starters:'Pre A1 Starters',movers:'A1 Movers',flyers:'A2 Flyers',preschool:'Mầm non',primary:'Tiểu học',middle:'THCS',high:'THPT',college:'Sinh viên',work:'Người đi làm'};
 const stages=['starters','movers','flyers'];
 const groups=['preschool','primary','middle','high','college','work'];
-const courseNames={...Object.fromEntries(stages.map(key=>[key,names[key]])),one:'Kèm 1–1',conversation:'Tiếng Anh giao tiếp',undecided:'Nhờ Ms Thủy xác định trình độ'};
+const courseNames={...Object.fromEntries(Object.entries(courseData).map(([key,course])=>[key,course.name||names[key]])),one:'Kèm 1–1',undecided:'Nhờ Ms Thủy xác định trình độ'};
 const turn=()=>location.hash.slice(1).split('/');
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
 const select=(values,labels,selected)=>values.map(key=>'<option value="'+esc(key)+'" '+(key===selected?'selected':'')+'>'+esc(labels[key]??key)+'</option>').join('');
 const button=(href,label,theme='')=>'<a class="btn '+theme+'" href="#'+href+'">'+label+'</a>';
 const section=(title,inner,intro='')=>'<section class="section"><div class="wrap"><h1>'+title+'</h1>'+(intro?'<p class="intro">'+intro+'</p>':'')+inner+'</div></section>';
 const audio=(src,label='Bài nghe')=>'<audio controls preload="none" aria-label="'+esc(label)+'" src="'+esc(src)+'"></audio>';
-const credentials='<div class="credentials"><div><strong>Ngôn ngữ Anh</strong><span>Trường Đại học Công nghiệp</span></div><div><strong>TESOL</strong><span>Chứng chỉ giảng dạy tiếng Anh</span></div><div><strong>Hơn 6 năm</strong><span>Dạy trẻ em và tiếng Anh giao tiếp cho người đi làm</span></div></div>';
+const credentials='<div class="credentials"><div><strong>Ngôn ngữ Anh</strong><span>Trường Đại học Công nghiệp</span></div><div><strong>TESOL</strong><span>Chứng chỉ giảng dạy tiếng Anh</span></div><div><strong>CHỨNG CHỈ NGHIỆP VỤ SƯ PHẠM CẤP 1</strong></div><div><strong>CHỨNG CHỈ NGHIỆP VỤ SƯ PHẠM CẤP 2</strong></div><div><strong>Hơn 6 năm</strong><span>Dạy trẻ em và tiếng Anh giao tiếp cho người đi làm</span></div></div>';
 let state={user:null,unlocked:false};
 let view=0;
 let lastResult=null;
@@ -58,10 +58,10 @@ function home(anchor) {
   <section class="hero"><div class="wrap landing-hero">
     <div class="hero-copy"><p class="hero-label">SUNNY HOUSE · TIẾNG ANH CAMBRIDGE</p>
       <h1>Vững từng bước, <em>tự tin nói tiếng Anh</em></h1>
-      <p>Cùng Ms Thủy xác định điểm bắt đầu cho con, chọn lộ trình Cambridge và luyện tiếng Anh qua bài nghe, từ vựng và trò chơi.</p>
+      <p>Học tiếng Anh cùng MS Thủy. Chọn lộ trình phù hợp cho con và luyện tiếng Anh qua bài nghe, từ vựng và trò chơi.</p>
       <div class="actions">${button('start','Làm bài đầu vào miễn phí','gold')}${button('home/path','Xem lộ trình','outline')}</div>
     </div>
-    <figure class="figure"><img class="founder-portrait" src="/images/mr-thuy-tesol.webp" alt="Ms Thủy mặc áo tốt nghiệp và cầm bìa chứng chỉ TESOL" width="850" height="830" fetchpriority="high"><figcaption class="nametag">Ms Thủy <span>Founder SUNNY HOUSE</span></figcaption></figure>
+    <figure class="figure"><img class="founder-portrait" src="/images/ms-thuy-tesol.webp" alt="Ms Thủy mặc áo tốt nghiệp và cầm bìa chứng chỉ TESOL" width="850" height="830" fetchpriority="high"><figcaption class="nametag">Ms Thủy <span>Founder SUNNY HOUSE</span></figcaption></figure>
   </div><div class="wrap">${credentials}</div></section>
   <section class="section alternate" id="home-path"><div class="wrap">
     <p class="landing-label">CHƯƠNG TRÌNH CAMBRIDGE</p><h2>Ba cấp độ, một lộ trình rõ ràng</h2>
@@ -95,35 +95,47 @@ function home(anchor) {
 function about() {
   main.innerHTML=section('Về SUNNY HOUSE','<article class="card"><h3>Ms Thủy · Founder SUNNY HOUSE</h3><p>Ms Thủy sinh năm 2000, tốt nghiệp ngành Ngôn ngữ Anh tại Trường Đại học Công nghiệp. Cô có chứng chỉ nghiệp vụ sư phạm cấp tiểu học và THCS, cùng chứng chỉ TESOL.</p><p>Cô có hơn 6 năm kinh nghiệm dạy trẻ mầm non, học sinh tiểu học và tiếng Anh giao tiếp cho người đi làm.</p>'+button('consult','Nhận tư vấn','gold')+'</article>');
 }
+function courseCard(key) {
+  return '<article class="card stage"><h3>'+esc(courseNames[key])+'</h3>'+
+    button('course/'+key,'Xem khóa học','outline')+'</article>';
+}
 function courses(key) {
-  if(!key){main.innerHTML=section('Khóa học tại SUNNY HOUSE',stagesGrid()+'<div class="tabs grid"><div class="card"><h3>Kèm 1–1</h3></div><div class="card"><h3>Tiếng Anh giao tiếp</h3></div></div>');return;}
-  if(!stages.includes(key))return missing();
+  if(key==='global-success'){
+    main.innerHTML=section('Global Success','<div class="grid two">'+courseCard('global-6')+courseCard('global-7')+'</div>',
+      'Chọn lộ trình theo lớp của học sinh.');
+    return;
+  }
+  if(!key){
+    main.innerHTML=section('Khóa học tại SUNNY HOUSE',stagesGrid()+
+      '<div class="tabs grid">'+courseCard('conversation')+
+      '<article class="card stage"><h3>Global Success</h3><p>Lộ trình riêng cho lớp 6 và lớp 7.</p>'+
+      button('course/global-success','Chọn lớp','outline')+'</article>'+courseCard('kids-debate')+
+      '<article class="card"><h3>Kèm 1–1</h3>'+button('consult/one','Nhận tư vấn','outline')+'</article></div>');
+    return;
+  }
+  if(!Object.hasOwn(courseData,key))return missing();
   const course=courseData[key];
   const list=items=>'<ul>'+items.map(item=>'<li>'+esc(item)+'</li>').join('')+'</ul>';
-  const route=course.stages
-    ? '<div class="stack">'+course.stages.map((stage,i)=>`<details class="card" ${i===0?'open':''}>
-      <summary>Giai đoạn ${i+1} · ${esc(stage.title)}</summary>
-      <p><strong>Chủ đề.</strong> ${esc(stage.topics)}</p>
-      <p><strong>Kỹ năng.</strong> ${esc(stage.skills)}</p>
-      <p lang="en">“${esc(stage.example)}”</p>
-      <p><strong>Ôn tập.</strong> ${esc(stage.review)}</p>
-    </details>`).join('')+'</div>'
-    : '<article class="card">'+list(course.structure)+'<p>Nguồn đối chiếu theo tài liệu khóa học: '+esc(course.source)+'</p></article>';
-  main.innerHTML=section(names[key],`
+  const cards=items=>items.map(({title,lines})=>'<article class="card"><h3>'+esc(title)+'</h3>'+list(lines)+'</article>').join('');
+  const stagesMarkup=course.stages.map((stage,i)=>`<details class="card" ${i===0?'open':''}>
+      <summary>${esc(stage.title)}</summary>
+      <div class="stack tabs">${stage.units.map(({title,lines})=>'<details class="card"><summary>'+esc(title)+'</summary>'+list(lines)+'</details>').join('')}</div>
+    </details>`).join('');
+  const compare=Boolean(course.benefits);
+  const feeTable=course.fees ? `<div class="card course-compare"><table aria-label="${compare?'So sánh học phí và quyền lợi':'Lịch học và học phí'}">
+    ${compare?'<thead><tr><th scope="col">Thông tin lớp</th><th scope="col">Lớp A</th><th scope="col">Lớp B</th></tr></thead>':''}
+    <tbody>${course.fees.map(([label,...values])=>'<tr><th scope="row">'+esc(label)+'</th>'+values.map(value=>'<td>'+esc(value)+'</td>').join('')+'</tr>').join('')}</tbody>
+    </table></div>` : '<article class="card"><p>Liên hệ trung tâm hoặc nhắn Zalo để được tư vấn học phí.</p><a class="btn outline" href="https://zalo.me/0343027537">Nhắn Zalo</a></article>';
+  const index=key.startsWith('global-')?'course/global-success':'courses';
+  main.innerHTML=section(esc(courseNames[key]),`
     <p class="intro">${esc(course.overview)}</p>
-    <p><strong>Giáo trình.</strong> ${esc(course.textbook)}</p>
-    <div class="actions tabs">${button('consult/'+key,'Nhận tư vấn khóa này','gold')}${button('courses','Xem các khóa học','outline')}</div>
-    <h2>So sánh học phí theo lớp</h2>
-    <div class="card course-compare">
-      <table aria-label="So sánh Class A và Class B">
-        <thead><tr><th scope="col">Thông tin lớp</th>${course.fees.map(([label])=>'<th scope="col">'+esc(label)+'</th>').join('')}</tr></thead>
-        <tbody>${['Sĩ số','Thời lượng','Học phí'].map((label,i)=>'<tr><th scope="row">'+label+'</th>'+course.fees.map(fee=>'<td>'+esc(fee[i+1])+'</td>').join('')+'</tr>').join('')}</tbody>
-      </table>
-      ${course.feeNote?'<p class="fee-note">'+esc(course.feeNote)+'</p>':''}
-    </div>
-    <h2 class="tabs">Lộ trình học</h2>${route}
-    ${course.assessment?'<article class="card tabs"><h3>Đánh giá và theo dõi</h3><p>'+esc(course.assessment)+'</p></article>':''}
-    ${course.benefits?'<article class="card tabs"><h3>Quyền lợi học viên</h3>'+list(course.benefits)+'</article>':''}
+    ${course.textbook?'<p><strong>Giáo trình.</strong> '+esc(course.textbook)+'</p>':''}
+    <div class="actions tabs">${button('consult/'+key,'Nhận tư vấn khóa này','gold')}${button(index,index==='courses'?'Xem các khóa học':'Xem các lớp Global Success','outline')}</div>
+    <h2>${compare?'So sánh học phí theo lớp':'Lịch học và học phí'}</h2>${feeTable}
+    <h2 class="tabs">Lộ trình học</h2><div class="stack">${stagesMarkup}</div>
+    ${course.skills?'<h2 class="tabs">Bốn kỹ năng được rèn luyện</h2><div class="grid two">'+cards(course.skills)+'</div>':''}
+    ${course.benefits?'<h2 class="tabs">Quyền lợi theo lớp</h2><div class="grid two">'+cards(course.benefits)+'</div>':''}
+    ${course.assessment?'<article class="card tabs"><h2>Xếp lớp và theo dõi tiến độ</h2>'+list(course.assessment)+'</article>':''}
   `);
 }
 
@@ -173,7 +185,7 @@ function start() {
 function practice(key) {
   const level=stages.includes(key)?key:'starters';
   const tabs='<div class="actions tabs">'+stages.map(stage=>button('practice/'+stage,names[stage],stage===level?'active':'outline')).join('')+'</div>';
-  const cards=catalog.filter(p=>p.kind==='practice'&&p.level===level).map((p,i)=>`<article class="card"><h3>Đề ${i+1} · ${esc(p.title)}</h3><p>Nghe, Đọc và Viết · ${p.count} câu · khoảng 5–8 phút</p>${button('paper/'+p.id,'Mở đề','outline')}</article>`).join('');
+  const cards=catalog.filter(p=>p.kind==='practice'&&p.level===level).map((p,i)=>`<article class="card" lang="en"><h3>Test ${i+1} · ${esc(p.title)}</h3><p>Listening, Reading and Writing · ${p.count} questions · about 5–8 minutes</p>${button('paper/'+p.id,'Open test','outline')}</article>`).join('');
   const cross=state.unlocked?'<h2 class="tabs">Bài đầu vào theo nhóm</h2><div class="actions">'+groups.map(g=>button('paper/placement-'+g,names[g],'outline')).join('')+'</div>':'';
   main.innerHTML=section('Luyện đề online',tabs+(!state.user?requireLogin('practice/'+level):!state.unlocked?needPlacement():'')+'<div class="grid tabs">'+cards+'</div>'+cross,'Bài luyện ngắn do SUNNY HOUSE biên soạn. Chọn cấp độ để xem các đề.');
 }
@@ -194,16 +206,35 @@ function onlineLinkFields(link) {
   return `<label>Link video / lớp học online<input name="onlineUrl" type="url" maxlength="2048" placeholder="https://…" value="${esc(link?.url)}"></label>
     <label>Loại liên kết<select name="onlineType">${select(['video','meeting'],{video:'Video bài học',meeting:'Lớp học online'},link?.type||'video')}</select></label>`;
 }
-function questionView(q,i,value,preview=false) {
-  return `<article class="card question"><span class="pill">${esc(q.skill)} · Câu ${i+1}</span>${q.audio?audio(q.audio,'Nghe câu '+(i+1)):''}
+const englishSkills={Nghe:'Listening',Đọc:'Reading',Viết:'Writing'};
+const questionLabels={
+  vi:{question:'Câu',listen:'Nghe câu',picture:'Hình',answer:'Câu trả lời'},
+  en:{question:'Question',listen:'Listen to question',picture:'Picture',answer:'Answer'}
+};
+function questionView(q,i,value,preview=false,english=false) {
+  const labels=questionLabels[english?'en':'vi'];
+  const skill=english?englishSkills[q.skill]:q.skill;
+  return `<article class="card question" lang="${english?'en':'vi'}"><span class="pill">${esc(skill)} · ${labels.question} ${i+1}</span>${q.audio?audio(q.audio,labels.listen+' '+(i+1)):''}
   ${q.passage?'<p lang="en">'+esc(q.passage)+'</p>':''}<h3>${esc(q.prompt)}</h3>
-  ${q.options?'<div class="options '+(q.pictures?'pictures':'')+'">'+q.options.map((option,j)=>'<button type="button" class="outline '+(value===option?'selected':'')+'" data-q="'+i+'" data-option="'+j+'" aria-pressed="'+(value===option)+'" '+(preview?'disabled':'')+'>'+(q.pictures?'<span aria-hidden="true">'+esc(q.pictures[j])+'</span><span class="sr-only">Hình '+(j+1)+'</span>':esc(option))+'</button>').join('')+'</div>':'<textarea maxlength="2000" rows="2" data-input="'+i+'" aria-label="Câu trả lời '+(i+1)+'" '+(preview?'disabled':'')+'>'+esc(value)+'</textarea>'}</article>`;
+  ${q.options?'<div class="options '+(q.pictures?'pictures':'')+'">'+q.options.map((option,j)=>'<button type="button" class="outline '+(value===option?'selected':'')+'" data-q="'+i+'" data-option="'+j+'" aria-pressed="'+(value===option)+'" '+(preview?'disabled':'')+'>'+(q.pictures?'<span aria-hidden="true">'+esc(q.pictures[j])+'</span><span class="sr-only">'+labels.picture+' '+(j+1)+'</span>':esc(option))+'</button>').join('')+'</div>':'<textarea maxlength="2000" rows="2" data-input="'+i+'" aria-label="'+labels.answer+' '+(i+1)+'" '+(preview?'disabled':'')+'>'+esc(value)+'</textarea>'}</article>`;
 }
-function skillScores(result) {
-  return '<div class="scores">'+Object.entries(result.scores).map(([name,skill])=>'<span class="pill">'+esc(name)+' '+skill.correct+'/'+skill.total+'</span>').join('')+'</div>';
+function skillScores(result,english=false) {
+  return '<div class="scores">'+Object.entries(result.scores).map(([name,skill])=>'<span class="pill">'+esc(english?englishSkills[name]:name)+' '+skill.correct+'/'+skill.total+'</span>').join('')+'</div>';
 }
 function displayResult(p,result) {
   if(p.kind==='placement')lastResult=result;
+  if(p.kind==='practice'){
+    main.innerHTML=section('<span lang="en">Results · '+esc(p.title)+'</span>',`
+      <div lang="en"><article class="card">${skillScores(result,true)}
+      ${result.revisionTopics?.length?'<p>Review: '+esc(result.revisionTopics.map(skill=>englishSkills[skill]).join(', '))+'.</p>':''}
+      ${button('practice/'+p.level,'Back to practice tests','outline')}</article>
+      <div class="questions">${result.items.map((item,i)=>`<article class="card review">
+        <h3>Question ${i+1} · ${item.correct?'Correct':'Review'}</h3><p>${esc(item.prompt)}</p>
+        <p>Your answer: ${esc(item.selected)}</p><p>Correct answer: ${esc(item.answer)}</p>
+        <p>${esc(item.explanation)}</p>${item.audio?audio(item.audio,'Replay audio')+'<p>'+esc(item.transcript)+'</p>':''}
+      </article>`).join('')}</div></div>`);
+    return;
+  }
   main.innerHTML=section('Kết quả · '+esc(p.title),`${onlineLinkMarkup(p.onlineLink)}<article class="card">${skillScores(result)}
   ${result.recommendation?'<h3>Lộ trình đề xuất: '+esc(state.user?.route||result.recommendation)+'</h3><p>'+esc(result.reason)+'</p>':''}
   ${result.revisionTopics?.length?'<p>Nên ôn thêm: '+esc(result.revisionTopics.join(', '))+'.</p>':''}
@@ -228,6 +259,7 @@ async function paper(id,stamp) {
   if(!state.user.learner_group&&!state.unlocked){main.innerHTML=section('Làm bài',needPlacement());return;}
   const {paper:p,draft,result}=await api('papers/'+encodeURIComponent(id));
   if(stamp!==view)return;
+  const practiceTest=p.kind==='practice';
   const key='sunny-draft:'+state.user.id+':'+id;
   if(result){localStorage.removeItem(key);displayResult(p,result);return;}
   if(!p.questions.length) {
@@ -244,13 +276,15 @@ async function paper(id,stamp) {
   let local;
   try {local=JSON.parse(localStorage.getItem(key));}catch {local=null;}
   if(local?.revision===revision&&local.answers?.length===answers.length){answers=local.answers;dirty=true;}
-  main.innerHTML=section(esc(p.title),`
-  <p class="intro">${esc(names[p.level]||'')} · ${p.questions.length} câu · ${esc([...new Set(p.questions.map(q=>q.skill))].join(' và '))}${p.kind==='practice'||(p.kind==='placement'&&p.level==='preschool')?' · khoảng 5–8 phút':''}</p>
+  const title=practiceTest?'<span lang="en">'+esc(p.title)+'</span>':esc(p.title);
+  main.innerHTML=section(title,`
+  ${practiceTest?'<p class="intro" lang="en">'+esc(names[p.level])+' · '+p.questions.length+' questions · Listening, Reading and Writing · about 5–8 minutes</p>':`
+  <p class="intro">${esc(names[p.level]||'')} · ${p.questions.length} câu · ${esc([...new Set(p.questions.map(q=>q.skill))].join(' và '))}${p.kind==='placement'&&p.level==='preschool'?' · khoảng 5–8 phút':''}</p>`}
   ${p.level==='preschool'&&p.kind==='placement'?preschoolIntro():''}
   ${p.objective?'<p>'+esc(p.objective)+'</p>':''}${p.vocab?'<p>Từ vựng: '+p.vocab.map(esc).join(', ')+'</p>':''}
-  ${onlineLinkMarkup(p.onlineLink)}${fileMarkup(p.files)}<div class="questions">${p.questions.map((q,i)=>questionView(q,i,answers[i])).join('')}</div>
+  ${onlineLinkMarkup(p.onlineLink)}${fileMarkup(p.files)}<div class="questions">${p.questions.map((q,i)=>questionView(q,i,answers[i],false,practiceTest)).join('')}</div>
   ${p.application?'<article class="card"><h3>Vận dụng</h3><p>'+esc(p.application)+'</p></article>':''}
-  <div class="actions tabs"><button class="gold" id="submit">Nộp bài</button><p id="progress" role="status"></p></div>`);
+  <div class="actions tabs"><button class="gold" id="submit" lang="${practiceTest?'en':'vi'}">${practiceTest?'Submit answers':'Nộp bài'}</button><p id="progress" role="status"></p></div>`);
   const progress=$('#progress');
   const localSave=()=>localStorage.setItem(key,JSON.stringify({revision,answers}));
   async function sync() {
@@ -262,12 +296,14 @@ async function paper(id,stamp) {
         if(saved.result){localStorage.removeItem(key);if(stamp===view)displayResult(p,saved.result);return;}
         revision=saved.revision;
         if(dirty)localSave();else localStorage.removeItem(key);
-        writeStatus(progress,dirty?'Đang lưu…':'Đã lưu tiến độ','success');
+        const savedMessage=practiceTest?(dirty?'Saving…':'Progress saved'):(dirty?'Đang lưu…':'Đã lưu tiến độ');
+        writeStatus(progress,savedMessage,'success');
         if(dirty){clearTimeout(timer);timer=setTimeout(sync,200);}
       } catch(error) {
         dirty=true;
         conflict=error.status===409;
-        writeStatus(progress,conflict?error.message:'Đã lưu trên thiết bị này. Sẽ đồng bộ khi có mạng.','error');
+        const offlineMessage=practiceTest?'Saved on this device. Progress will sync when online.':'Đã lưu trên thiết bị này. Sẽ đồng bộ khi có mạng.';
+        writeStatus(progress,conflict&&practiceTest?'This test changed on another device. Reload to continue.':conflict?error.message:offlineMessage,'error');
       } finally {saving=null;}
     })();
     return saving;
@@ -295,7 +331,7 @@ async function paper(id,stamp) {
       const done=await api('papers/'+id+'/submit',{answers:[...answers],revision});
       dirty=false;localStorage.removeItem(key);await refresh();
       if(stamp===view)displayResult(p,done.result);
-    } catch(error){writeStatus(progress,error.message,'error');}
+    } catch(error){writeStatus(progress,practiceTest?(conflict||error.status===409?'This test changed on another device. Reload to continue.':'Could not submit your answers. Please try again.'):error.message,'error');}
     finally{submit.disabled=false;}
   };
   const online=()=>sync();
