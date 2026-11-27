@@ -73,7 +73,7 @@ function home(anchor) {
     <figure class="figure"><img class="founder-portrait" src="/images/ms-thuy-tesol.webp" alt="Ms Thủy mặc áo tốt nghiệp và cầm bìa chứng chỉ TESOL" width="850" height="830" fetchpriority="high"><figcaption class="nametag">Ms Thủy <span>Founder SUNNY HOUSE</span></figcaption></figure>
   </div><div class="wrap">${credentials}</div></section>
   <section class="section alternate" id="home-path"><div class="wrap">
-    <p class="landing-label">CHƯƠNG TRÌNH CAMBRIDGE</p><h2>Ba cấp độ, một lộ trình rõ ràng</h2>
+    <p class="landing-label">CHƯƠNG TRÌNH CAMBRIDGE</p><h2>Các cấp độ khác nhau, lộ trình học rõ ràng</h2>
     <p class="intro">Xem nội dung học, thời lượng và học phí từng cấp trước khi chọn lớp cho con.</p>${stagesGrid()}
   </div></section>
   <section class="section"><div class="wrap"><p class="landing-label">BÀI ĐẦU VÀO</p><h2>Bắt đầu từ đâu?</h2><div class="grid">
