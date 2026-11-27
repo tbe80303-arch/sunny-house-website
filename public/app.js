@@ -5,7 +5,7 @@ const main=$('#main');
 const names={starters:'Pre A1 Starters',movers:'A1 Movers',flyers:'A2 Flyers',preschool:'Mầm non',primary:'Tiểu học',middle:'THCS',high:'THPT',college:'Sinh viên',work:'Người đi làm'};
 const stages=['starters','movers','flyers'];
 const groups=['preschool','primary','middle','high','college','work'];
-const courseNames={...Object.fromEntries(stages.map(key=>[key,names[key]])),one:'Kèm 1–1',conversation:'Tiếng Anh giao tiếp',undecided:'Nhờ MR Thủy xác định trình độ'};
+const courseNames={...Object.fromEntries(stages.map(key=>[key,names[key]])),one:'Kèm 1–1',conversation:'Tiếng Anh giao tiếp',undecided:'Nhờ Ms Thủy xác định trình độ'};
 const turn=()=>location.hash.slice(1).split('/');
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
 const select=(values,labels,selected)=>values.map(key=>'<option value="'+esc(key)+'" '+(key===selected?'selected':'')+'>'+esc(labels[key]??key)+'</option>').join('');
@@ -53,21 +53,47 @@ function stagesGrid() {
   const notes=['Làm quen từ và câu ngắn.','Nghe hội thoại và đọc mô tả.','Đọc hiểu câu chuyện và nghe lấy chi tiết.'];
   return '<div class="grid">'+stages.map((key,i)=>'<article class="card stage"><h3>'+names[key]+'</h3><p>'+notes[i]+'</p>'+button('course/'+key,'Xem khóa học','outline')+'</article>').join('')+'</div>';
 }
-function home() {
-  main.innerHTML=`<section class="hero"><div class="wrap hero-grid">
-  <div><h1>Học tiếng Anh theo lộ trình phù hợp cùng <em>SUNNY HOUSE</em></h1>
-  <p>Cùng MR Thủy xác định điểm bắt đầu, chọn lộ trình và luyện tiếng Anh qua bài nghe, từ vựng và trò chơi.</p>
-  <div class="actions">${button('start','Làm bài đầu vào miễn phí','gold')}${button('auth','Đăng nhập luyện đề','outline')}</div><a class="under" href="#courses">Xem lộ trình khóa học</a></div>
-  <figure class="figure"><img class="founder-portrait" src="/images/mr-thuy-tesol.webp" alt="MR Thủy mặc áo tốt nghiệp và cầm bìa chứng chỉ TESOL" fetchpriority="high"><figcaption class="nametag">MR Thủy · Founder SUNNY HOUSE</figcaption></figure>
-  ${credentials}</div></section>
-  <section class="section"><div class="wrap"><h2>Bắt đầu từ đâu?</h2><div class="grid">
-  <article class="card"><span class="step">1</span><h3>Làm bài đầu vào</h3><p>Chọn nhóm người học để nhận bài phù hợp.</p><a href="#start">Bắt đầu làm bài</a></article>
-  <article class="card"><span class="step">2</span><h3>Xem kết quả và lộ trình</h3><p>Xem kỹ năng cần ôn và trao đổi với MR Thủy.</p><a href="#consult">Nhận tư vấn</a></article>
-  <article class="card"><span class="step">3</span><h3>Luyện tập mỗi ngày</h3><p>Luyện đề ngắn, nghe từ mới và chơi cùng bạn.</p><a href="#practice">Xem bài luyện</a></article></div></div></section>
-  <section class="section alternate"><div class="wrap"><h2>Lộ trình Cambridge</h2>${stagesGrid()}</div></section>`;
+function home(anchor) {
+  main.innerHTML=`<div class="landing">
+  <section class="hero"><div class="wrap landing-hero">
+    <div class="hero-copy"><p class="hero-label">SUNNY HOUSE · TIẾNG ANH CAMBRIDGE</p>
+      <h1>Học tiếng Anh<br> <em>theo lộ trình</em><br> phù hợp</h1>
+      <p>Cùng Ms Thủy xác định điểm bắt đầu cho con, chọn lộ trình Cambridge và luyện tiếng Anh qua bài nghe, từ vựng và trò chơi.</p>
+      <div class="actions">${button('start','Làm bài đầu vào miễn phí','gold')}${button('home/path','Xem lộ trình','outline')}</div>
+    </div>
+    <figure class="figure"><img class="founder-portrait" src="/images/mr-thuy-tesol.webp" alt="Ms Thủy mặc áo tốt nghiệp và cầm bìa chứng chỉ TESOL" width="850" height="830" fetchpriority="high"><figcaption class="nametag">Ms Thủy <span>Founder SUNNY HOUSE</span></figcaption></figure>
+  </div><div class="wrap">${credentials}</div></section>
+  <section class="section alternate" id="home-path"><div class="wrap">
+    <p class="landing-label">CHƯƠNG TRÌNH CAMBRIDGE</p><h2>Ba cấp độ, một lộ trình rõ ràng</h2>
+    <p class="intro">Xem nội dung học, thời lượng và học phí từng cấp trước khi chọn lớp cho con.</p>${stagesGrid()}
+  </div></section>
+  <section class="section"><div class="wrap"><p class="landing-label">BÀI ĐẦU VÀO</p><h2>Bắt đầu từ đâu?</h2><div class="grid">
+    <article class="card"><span class="step">1</span><h3>Làm bài đầu vào</h3><p>Chọn nhóm người học để nhận bài phù hợp.</p><a href="#start">Bắt đầu làm bài</a></article>
+    <article class="card"><span class="step">2</span><h3>Xem kết quả và lộ trình</h3><p>Xem kỹ năng cần ôn và trao đổi với Ms Thủy.</p><a href="#consult">Nhận tư vấn</a></article>
+    <article class="card"><span class="step">3</span><h3>Luyện tập mỗi ngày</h3><p>Luyện đề ngắn, nghe từ mới và chơi cùng bạn.</p><a href="#practice">Xem bài luyện</a></article>
+  </div></div></section>
+  <section class="section alternate"><div class="wrap landing-split">
+    <div><p class="landing-label">LUYỆN TẬP TRỰC TUYẾN</p><h2>Học thêm giữa các buổi trên lớp</h2><p class="intro">Mở bài luyện, nghe lại từ khó hoặc chọn một trò chơi theo cấp độ của con.</p></div>
+    <div class="landing-quick">
+      <a href="#practice"><strong>Luyện đề</strong><span>Bài nghe, đọc và viết theo cấp độ</span></a>
+      <a href="#vocab"><strong>Thẻ từ vựng</strong><span>Nghe phát âm và ôn từ đã lưu</span></a>
+      <a href="#games"><strong>Board game</strong><span>Chơi cá nhân hoặc chia đội</span></a>
+    </div>
+  </div></section>
+  <section class="section" id="home-questions"><div class="wrap landing-split">
+    <div><p class="landing-label">DÀNH CHO PHỤ HUYNH</p><h2>Câu hỏi thường gặp</h2></div>
+    <div class="landing-faq">
+      <details><summary>Con nên bắt đầu ở cấp độ nào?</summary><p>Hãy cho con làm bài đầu vào miễn phí. Bài cho học sinh tiểu học gợi ý Starters, Movers hoặc Flyers theo kết quả nghe và đọc.</p></details>
+      <details><summary>Bài đang làm có được lưu không?</summary><p>Khi đăng nhập, tiến độ có thể đồng bộ để con tiếp tục trên thiết bị khác.</p></details>
+      <details><summary>Xem học phí và hỏi về lớp học ở đâu?</summary><p>Xem từng trang <a href="#courses">khóa học</a> hoặc gửi yêu cầu tư vấn để xác nhận lớp và mức học phí đang áp dụng.</p></details>
+    </div>
+  </div></section>
+  <section class="section landing-cta"><div class="wrap landing-split"><div><h2>Trao đổi về lộ trình của con</h2><p>Cho Ms Thủy biết độ tuổi và mục tiêu học để được tư vấn bước tiếp theo.</p></div><div class="actions">${button('consult','Nhận tư vấn','gold')}${button('about','Giới thiệu Ms Thủy','outline')}</div></div></section>
+  </div>`;
+  if(anchor==='path'||anchor==='questions')document.getElementById('home-'+anchor)?.scrollIntoView();
 }
 function about() {
-  main.innerHTML=section('Về SUNNY HOUSE','<article class="card"><h3>MR Thủy · Founder SUNNY HOUSE</h3><p>MR Thủy sinh năm 2000, tốt nghiệp ngành Ngôn ngữ Anh tại Trường Đại học Công nghiệp. Thầy có chứng chỉ nghiệp vụ sư phạm cấp tiểu học và THCS, cùng chứng chỉ TESOL.</p><p>Thầy có hơn 6 năm kinh nghiệm dạy trẻ mầm non, học sinh tiểu học và tiếng Anh giao tiếp cho người đi làm.</p>'+button('consult','Nhận tư vấn','gold')+'</article>');
+  main.innerHTML=section('Về SUNNY HOUSE','<article class="card"><h3>Ms Thủy · Founder SUNNY HOUSE</h3><p>Ms Thủy sinh năm 2000, tốt nghiệp ngành Ngôn ngữ Anh tại Trường Đại học Công nghiệp. Cô có chứng chỉ nghiệp vụ sư phạm cấp tiểu học và THCS, cùng chứng chỉ TESOL.</p><p>Cô có hơn 6 năm kinh nghiệm dạy trẻ mầm non, học sinh tiểu học và tiếng Anh giao tiếp cho người đi làm.</p>'+button('consult','Nhận tư vấn','gold')+'</article>');
 }
 function courses(key) {
   if(!key){main.innerHTML=section('Khóa học tại SUNNY HOUSE',stagesGrid()+'<div class="tabs grid"><div class="card"><h3>Kèm 1–1</h3></div><div class="card"><h3>Tiếng Anh giao tiếp</h3></div></div>');return;}
@@ -258,7 +284,7 @@ async function paper(id,stamp) {
 function consult(key) {
   const suggested=Object.keys(courseNames).find(id=>(state.user?.route||lastResult?.recommendation)===courseNames[id]);
   const level=Object.hasOwn(courseNames,key)?key:suggested||'undecided';
-  main.innerHTML=section('Nhận tư vấn từ MR Thủy',`<form class="card form" id="consult">
+  main.innerHTML=section('Nhận tư vấn từ Ms Thủy',`<form class="card form" id="consult">
   <label>Tên người cần tư vấn<input name="name" maxlength="100" value="${esc(state.user?.name)}" required></label>
   <label>Nhóm tuổi hoặc lớp<input name="group" maxlength="60" value="${esc(names[state.user?.learner_group])}" required></label>
   <label>Điện thoại hoặc Zalo của người liên hệ<input name="phone" type="tel" maxlength="20" autocomplete="tel" required></label>
@@ -514,10 +540,11 @@ async function render(){
   const [path='home',key,id]=turn();
   $('#menu').setAttribute('aria-expanded','false');
   $('#nav').classList.remove('open');
+  closeNavGroups();
   main.innerHTML=section('Đang tải…','');
   try {
     switch(path) {
-      case '':case 'home':home();break;
+      case '':case 'home':home(key);break;
       case 'about':about();break;
       case 'courses':courses();break;
       case 'course':courses(key);break;
@@ -544,9 +571,65 @@ async function render(){
     main.innerHTML=section('Chưa mở được trang','<p class="error">'+esc(error.message)+'</p>'+(error.status===403?needPlacement():button('home','Về trang chủ','outline')));
   }
 }
-$('#menu').onclick=()=>{
-  const open=$('#nav').classList.toggle('open');$('#menu').setAttribute('aria-expanded',String(open));
+const nav=$('#nav');
+const menu=$('#menu');
+const navGroups=[...nav.querySelectorAll('.nav-group')];
+function setNavGroup(group,open) {
+  $('.nav-toggle',group).setAttribute('aria-expanded',String(open));
+  $('.nav-options',group).hidden=!open;
+}
+function closeNavGroups(except) {
+  for(const group of navGroups)if(group!==except)setNavGroup(group,false);
+}
+for(const group of navGroups) {
+  const toggle=$('.nav-toggle',group);
+  toggle.onclick=()=>{
+    const opening=toggle.getAttribute('aria-expanded')==='false';
+    closeNavGroups(group);
+    setNavGroup(group,opening);
+  };
+  group.addEventListener('pointerenter',event=>{
+    if(event.pointerType!=='mouse'||!matchMedia('(min-width: 1181px)').matches)return;
+    closeNavGroups(group);
+    setNavGroup(group,true);
+  });
+  group.addEventListener('pointerleave',event=>{
+    if(event.pointerType==='mouse'&&!group.contains(document.activeElement))setNavGroup(group,false);
+  });
+  group.addEventListener('focusout',event=>{
+    if(!group.contains(event.relatedTarget))setNavGroup(group,false);
+  });
+}
+function closeMobileNav() {
+  nav.classList.remove('open');
+  menu.setAttribute('aria-expanded','false');
+}
+menu.onclick=()=>{
+  const open=nav.classList.toggle('open');
+  menu.setAttribute('aria-expanded',String(open));
+  if(!open)closeNavGroups();
 };
+nav.addEventListener('click',event=>{
+  if(!event.target.closest('a'))return;
+  closeNavGroups();
+  closeMobileNav();
+});
+document.addEventListener('pointerdown',event=>{
+  if(event.target.closest('.navwrap'))return;
+  closeNavGroups();
+  closeMobileNav();
+});
+document.addEventListener('keydown',event=>{
+  if(event.key!=='Escape')return;
+  const group=event.target.closest('.nav-group');
+  if(group&&$('.nav-toggle',group).getAttribute('aria-expanded')==='true'){
+    $('.nav-toggle',group).focus();
+    setNavGroup(group,false);
+  } else if(nav.classList.contains('open')){
+    menu.focus();
+    closeMobileNav();
+  }
+});
 window.addEventListener('hashchange',()=>{window.scrollTo(0,0);void render();});
 try {await refresh();} catch {state={user:null,unlocked:false};}
 await render();

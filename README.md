@@ -29,9 +29,9 @@ Chạy bài tích hợp khi máy chủ cục bộ đang hoạt động. Bài tí
 4. Trong **D1 → Console** của database production mới, chạy nội dung `migrations/0001_initial.sql` một lần. Nếu database đã được khởi tạo, kiểm tra các bảng trước khi áp dụng migration tiếp theo. Giữ nguyên database và bucket qua các lần triển khai. Mọi thay đổi cấu trúc tiếp theo dùng migration mới.
 5. Mở URL Pages do Dashboard trả về. Thử đăng ký tài khoản kiểm thử, nghe một tệp âm thanh, lưu bài để mở lại bằng phiên đăng nhập khác và gửi một form tư vấn thử. Xóa dữ liệu thử qua Dashboard khi hoàn thành kiểm tra trực tiếp.
 
-### Cấp quyền cho MR Thủy
+### Cấp quyền cho Ms Thủy
 
-MR Thủy tự đăng ký tài khoản bằng email do mình quản lý. Chủ Cloudflare xác minh địa chỉ vừa dùng rồi chạy câu SQL sau trong **D1 → Console** của database production:
+Ms Thủy tự đăng ký tài khoản bằng email do mình quản lý. Chủ Cloudflare xác minh địa chỉ vừa dùng rồi chạy câu SQL sau trong **D1 → Console** của database production:
 
 ```sql
 UPDATE users SET role = 'teacher'
@@ -51,6 +51,6 @@ Giáo viên mở **Tài khoản → Quản lý lớp**. Tạo lớp theo cấp �
 
 ## Phạm vi cần hoàn thiện trước khi bàn giao production
 
-- Ba trang khóa học dựa trên tệp Word chính thức của SUNNY HOUSE. Học phí Movers và Flyers được ghi là tham khảo và cần xác nhận với trung tâm trước khi gửi phụ huynh theo ghi chú trong nguồn. Trang chủ dùng chân dung MR Thủy từ ảnh tốt nghiệp do người dùng cung cấp, đã tách nền. Các ảnh mẫu bố cục vẫn cần được cung cấp.
+- Ba trang khóa học dựa trên tệp Word chính thức của SUNNY HOUSE. Học phí Movers và Flyers được ghi là tham khảo và cần xác nhận với trung tâm trước khi gửi phụ huynh theo ghi chú trong nguồn. Trang chủ dùng chân dung Ms Thủy từ ảnh tốt nghiệp do người dùng cung cấp, đã tách nền. Các ảnh mẫu bố cục vẫn cần được cung cấp.
 - 30 bài luyện là bài ngắn 5 câu, gồm Nghe, Đọc và Viết. Cần biên soạn thêm câu, tranh và kiểu bài để đạt 15–20 phút mỗi đề. 30 bộ trên lớp hiện là các hoạt động ngắn có mục tiêu, từ vựng, hai câu chấm tự động và bài vận dụng. MP3 tiếng Anh dùng giọng tổng hợp Flite, đổi giọng theo lượt hội thoại. Hướng dẫn tiếng Việt cho mầm non là tệp MP3 riêng.
 - Kiểm thử cục bộ đã chạy cho D1, R2, xác thực, khóa bài, tiếp tục trên thiết bị khác, chống nộp trùng, giáo viên và form tư vấn. Phiên kiểm thử trình duyệt chưa mở được qua relay nên các kích thước 360, 390, 768 px và thao tác chạm ba game cần nghiệm thu trên trình duyệt. Production, Google Sheets và gửi email cần quyền của chủ dịch vụ trước khi kiểm tra đầu-cuối.

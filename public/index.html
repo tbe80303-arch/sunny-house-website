@@ -3,9 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Bài đầu vào, học liệu và lộ trình tiếng Anh cùng MR Thủy tại SUNNY HOUSE.">
-  <title>SUNNY HOUSE — Học tiếng Anh cùng MR Thủy</title>
+  <meta name="description" content="Bài đầu vào, học liệu và lộ trình tiếng Anh cùng Ms Thủy tại SUNNY HOUSE.">
+  <title>SUNNY HOUSE — Học tiếng Anh cùng Ms Thủy</title>
   <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/landing.css">
   <script type="module" src="/app.js"></script>
 </head>
 <body>
@@ -14,13 +15,86 @@
     <a href="#home" class="brand"><span class="sun" aria-hidden="true">☀</span><span>SUNNY <b>HOUSE</b></span></a>
     <button class="menu" id="menu" aria-controls="nav" aria-expanded="false">☰ <span>Menu</span></button>
     <nav id="nav" aria-label="Điều hướng chính">
-      <a href="#practice">Luyện đề</a><a href="#assigned">Bài trên lớp</a><a href="#vocab">Từ vựng</a>
-      <a href="#games">Board game</a><a href="#courses">Khóa học</a><a href="#about">Về SUNNY HOUSE</a>
-      <a href="#auth" id="account">Đăng nhập</a><a href="#consult" class="btn small gold">Nhận tư vấn</a>
+      <div class="nav-group">
+        <a href="#practice">Luyện đề</a>
+        <button class="nav-toggle" type="button" aria-label="Mục con của Luyện đề" aria-expanded="false" aria-controls="nav-options-0"><span aria-hidden="true"></span></button>
+        <ul id="nav-options-0" class="nav-options" hidden>
+          <li><a href="#practice">Tất cả bài luyện</a></li>
+          <li><a href="#practice/starters">Pre A1 Starters</a></li>
+          <li><a href="#practice/movers">A1 Movers</a></li>
+          <li><a href="#practice/flyers">A2 Flyers</a></li>
+          <li><a href="#start">Bài đầu vào</a></li>
+        </ul>
+      </div>
+      <div class="nav-group">
+        <a href="#assigned">Bài trên lớp</a>
+        <button class="nav-toggle" type="button" aria-label="Mục con của Bài trên lớp" aria-expanded="false" aria-controls="nav-options-1"><span aria-hidden="true"></span></button>
+        <ul id="nav-options-1" class="nav-options" hidden>
+          <li><a href="#assigned">Bài được giao</a></li>
+          <li><a href="#auth">Lịch sử học</a></li>
+          <li><a href="#teacher">Quản lý lớp</a></li>
+        </ul>
+      </div>
+      <div class="nav-group">
+        <a href="#vocab">Từ vựng</a>
+        <button class="nav-toggle" type="button" aria-label="Mục con của Từ vựng" aria-expanded="false" aria-controls="nav-options-2"><span aria-hidden="true"></span></button>
+        <ul id="nav-options-2" class="nav-options" hidden>
+          <li><a href="#vocab/starters">Từ vựng Starters</a></li>
+          <li><a href="#vocab/movers">Từ vựng Movers</a></li>
+          <li><a href="#vocab/flyers">Từ vựng Flyers</a></li>
+        </ul>
+      </div>
+      <div class="nav-group">
+        <a href="#games">Board game</a>
+        <button class="nav-toggle" type="button" aria-label="Mục con của Board game" aria-expanded="false" aria-controls="nav-options-3"><span aria-hidden="true"></span></button>
+        <ul id="nav-options-3" class="nav-options" hidden>
+          <li><a href="#games">Tất cả trò chơi</a></li>
+          <li><a href="#games/bingo">Bingo nghe từ</a></li>
+          <li><a href="#games/race">Đường đua ghép câu</a></li>
+          <li><a href="#games/treasure">Truy tìm kho báu</a></li>
+        </ul>
+      </div>
+      <div class="nav-group">
+        <a href="#courses">Khóa học</a>
+        <button class="nav-toggle" type="button" aria-label="Mục con của Khóa học" aria-expanded="false" aria-controls="nav-options-4"><span aria-hidden="true"></span></button>
+        <ul id="nav-options-4" class="nav-options" hidden>
+          <li><a href="#courses">Tất cả khóa học</a></li>
+          <li><a href="#course/starters">Pre A1 Starters</a></li>
+          <li><a href="#course/movers">A1 Movers</a></li>
+          <li><a href="#course/flyers">A2 Flyers</a></li>
+        </ul>
+      </div>
+      <div class="nav-group">
+        <a href="#about">Về SUNNY HOUSE</a>
+        <button class="nav-toggle" type="button" aria-label="Mục con của Về SUNNY HOUSE" aria-expanded="false" aria-controls="nav-options-5"><span aria-hidden="true"></span></button>
+        <ul id="nav-options-5" class="nav-options" hidden>
+          <li><a href="#about">Giới thiệu Ms Thủy</a></li>
+          <li><a href="#home/path">Lộ trình học</a></li>
+          <li><a href="#home/questions">Câu hỏi thường gặp</a></li>
+        </ul>
+      </div>
+      <div class="nav-group">
+        <a href="#auth" id="account">Đăng nhập</a>
+        <button class="nav-toggle" type="button" aria-label="Mục con của Tài khoản" aria-expanded="false" aria-controls="nav-options-6"><span aria-hidden="true"></span></button>
+        <ul id="nav-options-6" class="nav-options" hidden>
+          <li><a href="#auth">Tài khoản học viên</a></li>
+          <li><a href="#auth/register">Tạo tài khoản</a></li>
+          <li><a href="#teacher">Khu vực giáo viên</a></li>
+        </ul>
+      </div>
+      <div class="nav-group nav-call">
+        <a href="#consult">Nhận tư vấn</a>
+        <button class="nav-toggle" type="button" aria-label="Mục con của Nhận tư vấn" aria-expanded="false" aria-controls="nav-options-7"><span aria-hidden="true"></span></button>
+        <ul id="nav-options-7" class="nav-options" hidden>
+          <li><a href="#consult">Gửi yêu cầu tư vấn</a></li>
+          <li><a href="tel:0343027537">Gọi trung tâm</a></li>
+          <li><a href="https://zalo.me/0343027537">Nhắn Zalo</a></li>
+        </ul>
+      </div>
     </nav>
   </div>
 </header>
 <main id="main"></main>
-<footer><div class="wrap foot"><div><a href="#home" class="brand"><span class="sun" aria-hidden="true">☀</span>SUNNY HOUSE</a><p>Tiếng Anh cùng MR Thủy</p></div><div class="actions"><a href="tel:0343027537">Gọi ngay</a><a href="https://zalo.me/0343027537">Nhắn Zalo</a><a href="mailto:lathuy32@gmail.com">Email</a></div></div></footer>
+<footer><div class="wrap foot"><div><a href="#home" class="brand"><span class="sun" aria-hidden="true">☀</span>SUNNY HOUSE</a><p>Tiếng Anh cùng Ms Thủy</p></div><div class="actions"><a href="tel:0343027537">Gọi ngay</a><a href="https://zalo.me/0343027537">Nhắn Zalo</a><a href="mailto:lathuy32@gmail.com">Email</a></div></div></footer>
 </body>
 </html>
