@@ -69,7 +69,7 @@ await post(anon,'consult',lead);
 
 const teacher=await signup('teacher');
 await teacher('teacher/classes',{expected:403});
-execFileSync('node',['node_modules/wrangler/bin/wrangler.js','d1','execute','DB','--local','--command',
+execFileSync('node',['node_modules/wrangler/bin/wrangler.js','d1','execute','DB','--local','--config','wrangler.local.toml','--command',
   "UPDATE users SET role='teacher' WHERE email='"+email('teacher')+"'"],{stdio:'ignore'});
 const cls=await post(teacher,'teacher/classes',{title:'Lớp QA',level:'starters'});
 await post(teacher,'teacher/enroll',{classId:cls.id,email:email('preschool')});

@@ -25,8 +25,8 @@ Chạy bài tích hợp khi máy chủ cục bộ đang hoạt động. Bài tí
 
 1. Tạo hoặc chọn repository **riêng tư** của trung tâm trên GitHub. Thêm remote `origin` cho repository này và đẩy nhánh `main`. Repository chứa đáp án.
 2. Trong Cloudflare Dashboard, vào **Workers & Pages → Create application → Pages → Connect to Git**. Cấp quyền GitHub cho đúng repository, chọn nhánh production `main`, chọn cấu hình không dùng framework, đặt **Build output directory** là `public`. Không cần chạy lệnh build. Các lần đẩy lên `main` tiếp theo tự triển khai.
-3. Trong Cloudflare, tạo một D1 database tên `sunny-house` và một R2 bucket riêng tư tên `sunny-house-files`. Thay `database_id` mẫu trong `wrangler.toml` bằng ID của D1 thật. Kiểm tra **Settings → Bindings** của Pages có D1 tên binding `DB` và R2 tên binding `FILES` trỏ tới đúng tài nguyên. Dùng tài nguyên riêng cho preview nếu bật preview.
-4. Trên máy được chủ tài khoản đăng nhập qua `npx wrangler login`, chạy `npx wrangler d1 migrations apply DB --remote` và đẩy cấu hình đã cập nhật lên `main`. Giữ nguyên database và bucket qua các lần triển khai. Mọi thay đổi cấu trúc tiếp theo dùng migration mới.
+3. Trong Cloudflare, tạo một D1 database tên `sunny-house` và một R2 bucket riêng tư tên `sunny-house-files`. Trong **Settings → Bindings** của Pages, gắn D1 với tên `DB` và R2 với tên `FILES`. Tệp `wrangler.local.toml` chỉ dành cho máy cục bộ. Dùng tài nguyên riêng cho preview nếu bật preview.
+4. Trong **D1 → Console** của database production mới, chạy nội dung `migrations/0001_initial.sql` một lần. Nếu database đã được khởi tạo, kiểm tra các bảng trước khi áp dụng migration tiếp theo. Giữ nguyên database và bucket qua các lần triển khai. Mọi thay đổi cấu trúc tiếp theo dùng migration mới.
 5. Mở URL Pages do Dashboard trả về. Thử đăng ký tài khoản kiểm thử, nghe một tệp âm thanh, lưu bài để mở lại bằng phiên đăng nhập khác và gửi một form tư vấn thử. Xóa dữ liệu thử qua Dashboard khi hoàn thành kiểm tra trực tiếp.
 
 ### Cấp quyền cho MR Thủy
