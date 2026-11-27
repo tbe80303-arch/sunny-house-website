@@ -12,7 +12,16 @@ const select=(values,labels,selected)=>values.map(key=>'<option value="'+esc(key
 const button=(href,label,theme='')=>'<a class="btn '+theme+'" href="#'+href+'">'+label+'</a>';
 const section=(title,inner,intro='')=>'<section class="section"><div class="wrap"><h1>'+title+'</h1>'+(intro?'<p class="intro">'+intro+'</p>':'')+inner+'</div></section>';
 const audio=(src,label='Bài nghe')=>'<audio controls preload="none" aria-label="'+esc(label)+'" src="'+esc(src)+'"></audio>';
-const credentials='<div class="credentials"><div><strong>Ngôn ngữ Anh</strong><span>Trường Đại học Công nghiệp</span></div><div><strong>TESOL</strong><span>Chứng chỉ giảng dạy tiếng Anh</span></div><div><strong>CHỨNG CHỈ NGHIỆP VỤ SƯ PHẠM CẤP 1</strong></div><div><strong>CHỨNG CHỈ NGHIỆP VỤ SƯ PHẠM CẤP 2</strong></div><div><strong>Hơn 6 năm</strong><span>Dạy trẻ em và tiếng Anh giao tiếp cho người đi làm</span></div></div>';
+const credentials=`<div class="credentials">
+  <div><strong>Ngôn ngữ Anh</strong><span>Trường Đại học Công nghiệp</span></div>
+  <div>
+    <strong>TESOL</strong>
+    <span>Chứng chỉ giảng dạy tiếng Anh</span>
+    <span>Chứng chỉ nghiệp vụ sư phạm cấp 1</span>
+    <span>Chứng chỉ nghiệp vụ sư phạm cấp 2</span>
+  </div>
+  <div><strong>Hơn 6 năm</strong><span>Dạy trẻ em và tiếng Anh giao tiếp cho người đi làm</span></div>
+</div>`;
 let state={user:null,unlocked:false};
 let view=0;
 let lastResult=null;
