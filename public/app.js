@@ -73,8 +73,19 @@ function home(anchor) {
     <figure class="figure"><img class="founder-portrait" src="/images/ms-thuy-tesol.webp" alt="Ms Thủy mặc áo tốt nghiệp và cầm bìa chứng chỉ TESOL" width="850" height="830" fetchpriority="high"><figcaption class="nametag">Ms Thủy <span>Founder SUNNY HOUSE</span></figcaption></figure>
   </div><div class="wrap">${credentials}</div></section>
   <section class="section alternate" id="home-path"><div class="wrap">
-    <p class="landing-label">CHƯƠNG TRÌNH CAMBRIDGE</p><h2>Các cấp độ khác nhau, lộ trình học rõ ràng</h2>
-    <p class="intro">Xem nội dung học, thời lượng và học phí từng cấp trước khi chọn lớp cho con.</p>${stagesGrid()}
+    <h2>Các cấp độ khác nhau, lộ trình học rõ ràng</h2>
+    <p class="intro">Xem nội dung học, thời lượng và học phí để chọn khóa phù hợp.</p>
+    <h3>Chương trình Cambridge</h3>
+    ${stagesGrid()}
+    <div class="tabs">
+      <h3>Các lộ trình khác</h3>
+      <div class="grid two">
+        ${courseCard('global-6','Học từ vựng, ngữ pháp và phát âm theo 12 chủ đề lớp 6.')}
+        ${courseCard('global-7','Học theo 12 chủ đề lớp 7 và ôn tập sau mỗi ba Unit.')}
+        ${courseCard('kids-debate','Luyện nêu ý kiến, đưa lý do và tranh biện theo đội bằng tiếng Anh.')}
+        ${courseCard('conversation','Thực hành hướng dẫn lớp học và trao đổi với phụ huynh bằng tiếng Anh.')}
+      </div>
+    </div>
   </div></section>
   <section class="section"><div class="wrap"><p class="landing-label">BÀI ĐẦU VÀO</p><h2>Bắt đầu từ đâu?</h2><div class="grid">
     <article class="card"><span class="step">1</span><h3>Làm bài đầu vào</h3><p>Chọn nhóm người học để nhận bài phù hợp.</p><a href="#start">Bắt đầu làm bài</a></article>
@@ -104,8 +115,9 @@ function home(anchor) {
 function about() {
   main.innerHTML=section('Về SUNNY HOUSE','<article class="card"><h3>Ms Thủy · Founder SUNNY HOUSE</h3><p>Ms Thủy sinh năm 2000, tốt nghiệp ngành Ngôn ngữ Anh tại Trường Đại học Công nghiệp. Cô có chứng chỉ nghiệp vụ sư phạm cấp tiểu học và THCS, cùng chứng chỉ TESOL.</p><p>Cô có hơn 6 năm kinh nghiệm dạy trẻ mầm non, học sinh tiểu học và tiếng Anh giao tiếp cho người đi làm.</p>'+button('consult','Nhận tư vấn','gold')+'</article>');
 }
-function courseCard(key) {
+function courseCard(key,description='') {
   return '<article class="card stage"><h3>'+esc(courseNames[key])+'</h3>'+
+    (description?'<p>'+esc(description)+'</p>':'')+
     button('course/'+key,'Xem khóa học','outline')+'</article>';
 }
 function courses(key) {
