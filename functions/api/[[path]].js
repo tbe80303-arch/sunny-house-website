@@ -1,5 +1,7 @@
 import {papers} from '../../server/bank.js';
 
+const archiveReady=new WeakSet();
+const activeClass="NOT EXISTS (SELECT 1 FROM archived_classes ac WHERE ac.class_id=c.id)";
 const groups=['preschool','primary','middle','high','college','work'];
 const levels=['starters','movers','flyers',...groups];
 const encoder=new TextEncoder();
@@ -44,6 +46,12 @@ async function route(req,env,segments) {
   const one=(sql,...args)=>query(sql,...args).first();
   const all=async(sql,...args)=>(await query(sql,...args).all()).results;
   const run=(sql,...args)=>query(sql,...args).run();
+  async function prepareClassArchive() {
+    if(archiveReady.has(db))return;
+    // Existing Pages installations initialize this additive table on first use.
+    await run('CREATE TABLE IF NOT EXISTS archived_classes (class_id TEXT PRIMARY KEY REFERENCES classes(id), archived_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP)');
+    archiveReady.add(db);
+  }
   const body=async()=>{
     const text=await req.text();
     need(text.length<100000,'Nội dung vượt giới hạn.',413);
@@ -176,15 +184,19 @@ async function route(req,env,segments) {
     }
   }
   async function studentAssignment(assignmentId) {
-    return one('SELECT a.* FROM assignments a JOIN enrollment e ON e.class_id=a.class_id WHERE a.id=? AND a.published=1 AND e.student=? AND (a.student IS NULL OR a.student=?)',assignmentId,user.id,user.id);
+    await prepareClassArchive();
+    return one(`SELECT a.* FROM assignments a JOIN classes c ON c.id=a.class_id JOIN enrollment e ON e.class_id=a.class_id
+      WHERE a.id=? AND a.published=1 AND e.student=? AND (a.student IS NULL OR a.student=?)
+      AND (${activeClass} OR EXISTS(SELECT 1 FROM results r WHERE r.user_id=e.student AND r.paper=('assigned-'||a.id)))`,assignmentId,user.id,user.id);
   }
   if(scope==='assigned'&&method==='GET') {
+    await prepareClassArchive();
     return json(await all(`SELECT a.id,a.title,c.title class_name,c.level,a.created_at,
       CASE WHEN r.paper IS NOT NULL THEN 'Đã nộp' WHEN d.paper IS NOT NULL THEN 'Đang làm' ELSE 'Chưa làm' END status
       FROM assignments a JOIN classes c ON a.class_id=c.id JOIN enrollment e ON e.class_id=c.id
       LEFT JOIN drafts d ON d.paper=('assigned-'||a.id) AND d.user_id=e.student
       LEFT JOIN results r ON r.paper=('assigned-'||a.id) AND r.user_id=e.student
-      WHERE e.student=? AND a.published=1 AND (a.student IS NULL OR a.student=e.student) ORDER BY a.created_at DESC`,user.id));
+      WHERE e.student=? AND a.published=1 AND (a.student IS NULL OR a.student=e.student) AND ${activeClass} ORDER BY a.created_at DESC`,user.id));
   }
   if(scope==='files'&&method==='GET') {
     const file=await one('SELECT u.*,c.teacher FROM uploads u JOIN assignments a ON a.id=u.assignment JOIN classes c ON c.id=a.class_id WHERE u.id=?',id);
@@ -279,22 +291,36 @@ async function route(req,env,segments) {
   }
   if(scope==='teacher') {
     need(user.role==='teacher','Chỉ giáo viên có quyền truy cập.',403);
+    await prepareClassArchive();
     const ownedClass=async cid=>{
-      const row=await one('SELECT * FROM classes WHERE id=? AND teacher=?',cid,user.id);
+      const row=await one(`SELECT c.* FROM classes c WHERE c.id=? AND c.teacher=? AND ${activeClass}`,cid,user.id);
       need(row,'Không tìm thấy lớp.',404);
       return row;
     };
     const ownedAssignment=async aid=>{
-      const row=await one('SELECT a.* FROM assignments a JOIN classes c ON c.id=a.class_id WHERE a.id=? AND c.teacher=?',aid,user.id);
+      const row=await one(`SELECT a.* FROM assignments a JOIN classes c ON c.id=a.class_id WHERE a.id=? AND c.teacher=? AND ${activeClass}`,aid,user.id);
       need(row,'Không tìm thấy buổi học.',404);
       return row;
     };
     const enrolled=async(cid,sid)=>!!await one('SELECT 1 FROM enrollment WHERE class_id=? AND student=?',cid,sid);
     if(id==='classes'&&method==='GET') {
-      const classes=await all('SELECT * FROM classes WHERE teacher=? ORDER BY title',user.id);
-      const students=await all('SELECT e.class_id,u.id,u.name,u.email,u.route FROM enrollment e JOIN users u ON u.id=e.student JOIN classes c ON c.id=e.class_id WHERE c.teacher=? ORDER BY u.name,u.email',user.id);
-      const assignments=await all('SELECT a.id,a.class_id,a.student,a.title,a.published,a.release_at FROM assignments a JOIN classes c ON c.id=a.class_id WHERE c.teacher=? ORDER BY a.created_at DESC',user.id);
-      return json({classes,students,assignments});
+      const classes=await all(`SELECT c.* FROM classes c WHERE c.teacher=? AND ${activeClass} ORDER BY c.title`,user.id);
+      const archived=await all('SELECT c.*,ac.archived_at FROM classes c JOIN archived_classes ac ON ac.class_id=c.id WHERE c.teacher=? ORDER BY ac.archived_at DESC',user.id);
+      const students=await all(`SELECT e.class_id,u.id,u.name,u.email,u.route FROM enrollment e JOIN users u ON u.id=e.student JOIN classes c ON c.id=e.class_id WHERE c.teacher=? AND ${activeClass} ORDER BY u.name,u.email`,user.id);
+      const assignments=await all(`SELECT a.id,a.class_id,a.student,a.title,a.published,a.release_at FROM assignments a JOIN classes c ON c.id=a.class_id WHERE c.teacher=? AND ${activeClass} ORDER BY a.created_at DESC`,user.id);
+      return json({classes,archived,students,assignments});
+    }
+    if(id==='classes'&&action&&method==='POST') {
+      const change=await body();
+      need(change.action==='archive'||change.action==='restore');
+      const owned=await one('SELECT 1 FROM classes WHERE id=? AND teacher=?',action,user.id);
+      need(owned,'Không tìm thấy lớp.',404);
+      if(change.action==='archive') {
+        await run('INSERT INTO archived_classes(class_id) VALUES(?) ON CONFLICT(class_id) DO NOTHING',action);
+      } else {
+        await run('DELETE FROM archived_classes WHERE class_id=?',action);
+      }
+      return json({});
     }
     if(id==='classes'&&method==='POST') {
       const data=await body();
@@ -313,7 +339,7 @@ async function route(req,env,segments) {
     }
     if(id==='student'&&method==='GET') {
       const student=await one(`SELECT id,name,email,age,learner_group,route FROM users u WHERE id=?
-        AND EXISTS(SELECT 1 FROM classes c JOIN enrollment e ON e.class_id=c.id WHERE c.teacher=? AND e.student=u.id)`,action,user.id);
+        AND EXISTS(SELECT 1 FROM classes c JOIN enrollment e ON e.class_id=c.id WHERE c.teacher=? AND e.student=u.id AND ${activeClass})`,action,user.id);
       need(student,'Không tìm thấy học viên.',404);
       const results=(await all('SELECT paper,kind,result,review,created_at FROM results WHERE user_id=? ORDER BY created_at DESC',action)).map(row=>{
         const result=JSON.parse(row.result);
@@ -322,14 +348,14 @@ async function route(req,env,segments) {
       });
       const activity=await one('SELECT MAX(updated_at) date FROM drafts WHERE user_id=?',action);
       const missing=await all(`SELECT a.title,c.title class_name FROM assignments a JOIN classes c ON c.id=a.class_id
-        JOIN enrollment e ON e.class_id=c.id WHERE c.teacher=? AND e.student=? AND a.published=1 AND (a.student IS NULL OR a.student=e.student)
+        JOIN enrollment e ON e.class_id=c.id WHERE c.teacher=? AND e.student=? AND ${activeClass} AND a.published=1 AND (a.student IS NULL OR a.student=e.student)
         AND NOT EXISTS(SELECT 1 FROM results r WHERE r.user_id=e.student AND r.paper=('assigned-'||a.id))`,user.id,action);
       return json({student,results,missing,lastActivity:[activity.date,results[0]?.created_at].filter(Boolean).sort().at(-1)||null});
     }
     if(id==='route'&&method==='POST') {
       const data=await body();
       need(string(data.route,120)&&string(data.student,64));
-      const result=await run('UPDATE users SET route=? WHERE id=? AND EXISTS(SELECT 1 FROM enrollment e JOIN classes c ON c.id=e.class_id WHERE e.student=users.id AND c.teacher=?)',data.route.trim(),data.student,user.id);
+      const result=await run(`UPDATE users SET route=? WHERE id=? AND EXISTS(SELECT 1 FROM enrollment e JOIN classes c ON c.id=e.class_id WHERE e.student=users.id AND c.teacher=? AND ${activeClass})`,data.route.trim(),data.student,user.id);
       need(result.meta.changes,'Không tìm thấy học viên.',404);
       return json({});
     }

@@ -24,7 +24,7 @@ async function api(path,data,raw) {
   if(!res.ok)throw Object.assign(new Error(payload.error||'Máy chủ chưa phản hồi.'),{status:res.status});
   return payload;
 }
-const refresh=async()=>{state=await api('auth');$('#account').textContent=state.user?'Tài khoản':'Đăng nhập';};
+const refresh=async()=>{state=await api('auth');$('#account').textContent=state.user?.role==='teacher'?'Giảng viên':state.user?'Tài khoản':'Đăng nhập';};
 function writeStatus(node,message,kind='') {
   node.className='notice '+kind;
   node.textContent=message;
@@ -127,24 +127,27 @@ function courses(key) {
   `);
 }
 
+function bindPasswordForm() {
+  const details=document.createElement('details');
+  details.className='card tabs';
+  details.innerHTML=`<summary>Đổi mật khẩu</summary><form class="form tabs" id="change-password">
+    <label>Mật khẩu hiện tại<input type="password" name="current" autocomplete="current-password" minlength="10" maxlength="128" required></label>
+    <label>Mật khẩu mới<input type="password" name="next" autocomplete="new-password" minlength="10" maxlength="128" required></label>
+    <button type="submit">Lưu mật khẩu mới</button>${status}</form>`;
+  $('.wrap',main).append(details);
+  bindForm($('#change-password'),async(data,msg)=>{
+    await api('account/password',data);
+    $('#change-password').reset();
+    writeStatus(msg,'Đã lưu mật khẩu mới và đăng xuất các phiên khác.','success');
+  });
+}
 async function auth(stamp) {
   if(state.user) {
     const history=await api('history');
     if(stamp!==view)return;
     lastResult=history.find(row=>row.kind==='placement')?.result??null;
-    main.innerHTML=section('Tài khoản',`<div class="stack"><article class="card"><h3>${esc(state.user.name||state.user.email)}</h3><p>${esc(names[state.user.learner_group]||'Chưa chọn nhóm người học')}</p>${state.user.route?'<p>Lộ trình giáo viên đề xuất: '+esc(state.user.route)+'</p>':''}<div class="actions">${button('start',state.unlocked?'Xem bài đầu vào':'Làm bài đầu vào','gold')}${state.user.role==='teacher'?button('teacher','Quản lý lớp','outline'):''}<button class="outline" id="logout">Đăng xuất</button></div></article><article class="card"><h3>Lịch sử học</h3>${history.map(row=>'<p><a href="#paper/'+esc(row.paper)+'">'+esc(catalog.find(p=>p.id===row.paper)?.title||'Bài trên lớp')+'</a> · '+esc(row.created_at)+'</p>').join('')||'<p>Chưa có bài đã nộp.</p>'}</article></div>`);
-    const details=document.createElement('details');
-    details.className='card tabs';
-    details.innerHTML=`<summary>Đổi mật khẩu</summary><form class="form tabs" id="change-password">
-      <label>Mật khẩu hiện tại<input type="password" name="current" autocomplete="current-password" minlength="10" maxlength="128" required></label>
-      <label>Mật khẩu mới<input type="password" name="next" autocomplete="new-password" minlength="10" maxlength="128" required></label>
-      <button type="submit">Lưu mật khẩu mới</button>${status}</form>`;
-    $('.wrap',main).append(details);
-    bindForm($('#change-password'),async(data,msg)=>{
-      await api('account/password',data);
-      $('#change-password').reset();
-      writeStatus(msg,'Đã lưu mật khẩu mới và đăng xuất các phiên khác.','success');
-    });
+    main.innerHTML=section('Tài khoản',`<div class="stack"><article class="card"><h3>${esc(state.user.name||state.user.email)}</h3><p>${esc(names[state.user.learner_group]||'Chưa chọn nhóm người học')}</p>${state.user.route?'<p>Lộ trình giáo viên đề xuất: '+esc(state.user.route)+'</p>':''}<div class="actions">${button('start',state.unlocked?'Xem bài đầu vào':'Làm bài đầu vào','gold')}<button class="outline" id="logout">Đăng xuất</button></div></article><article class="card"><h3>Lịch sử học</h3>${history.map(row=>'<p><a href="#paper/'+esc(row.paper)+'">'+esc(catalog.find(p=>p.id===row.paper)?.title||'Bài trên lớp')+'</a> · '+esc(row.created_at)+'</p>').join('')||'<p>Chưa có bài đã nộp.</p>'}</article></div>`);
+    bindPasswordForm();
     $('#logout').onclick=async()=>{await api('auth/logout',{});lastResult=null;await refresh();await render();};
     return;
   }
@@ -155,7 +158,7 @@ async function auth(stamp) {
   ${mode==='register'?'<p>Phụ huynh tạo và giữ thông tin đăng nhập riêng cho mỗi trẻ. Mật khẩu cần ít nhất 10 ký tự.</p>':''}
   <button type="submit" class="gold">${mode==='login'?'Đăng nhập':'Tạo tài khoản'}</button>${status}
   ${mode==='login'?'<a href="#auth/register">Tạo tài khoản học viên</a>':'<a href="#auth">Đã có tài khoản</a>'}</form>`);
-  bindForm($('#auth-form'),async data=>{await api('auth/'+mode,data);await refresh();location.hash=afterAuth||'start';afterAuth='';});
+  bindForm($('#auth-form'),async data=>{await api('auth/'+mode,data);await refresh();location.hash=state.user?.role==='teacher'?'teacher':afterAuth||'start';afterAuth='';});
 }
 function start() {
   if(!state.user){main.innerHTML=section('Bài đầu vào miễn phí',requireLogin('start'));return;}
@@ -415,7 +418,12 @@ async function assigned(stamp){
 async function teacher(key,id,stamp) {
   if(!state.user){main.innerHTML=section('Quản lý lớp',requireLogin('teacher'));return;}
   if(state.user.role!=='teacher'){main.innerHTML=section('Quản lý lớp','<p>Chỉ tài khoản giáo viên có quyền truy cập.</p>');return;}
-  const tools='<div class="actions tabs">'+button('teacher','Lớp và buổi học','outline')+button('teacher/leads','Yêu cầu tư vấn','outline')+'</div>';
+  const tools=key==='assignment'||key==='student'?'<p><a href="#teacher">Quay lại quản lý lớp</a></p>':'';
+  if(key==='account'){
+    main.innerHTML=section('Tài khoản giảng viên','<article class="card"><h3>'+esc(state.user.name||state.user.email)+'</h3><p>'+esc(state.user.email)+'</p></article>');
+    bindPasswordForm();
+    return;
+  }
   if(key==='leads'){
     const rows=await api('teacher/leads');
     if(stamp!==view)return;
@@ -446,6 +454,18 @@ async function teacher(key,id,stamp) {
   }
   const data=await api('teacher/classes');
   if(stamp!==view)return;
+  if(key==='archive'){
+    main.innerHTML=section('Lớp đã xóa',
+      '<div class="staff-classes">'+data.archived.map(c=>`<article class="card"><h3>${esc(c.title)}</h3>
+      <p>${esc(names[c.level]||c.level)}</p><form class="form class-action" data-class="${esc(c.id)}"><button type="submit">Khôi phục lớp</button>${status}</form></article>`).join('')+'</div>'+
+      (!data.archived.length?'<p>Chưa có lớp đã xóa.</p>':''),
+      'Khôi phục để lớp và các buổi học xuất hiện lại trong danh sách.');
+    for(const form of main.querySelectorAll('.class-action'))bindForm(form,async()=>{
+      await api('teacher/classes/'+encodeURIComponent(form.dataset.class),{action:'restore'});
+      await render();
+    });
+    return;
+  }
   const clsNames=Object.fromEntries(data.classes.map(c=>[c.id,c.title]));
   const classSelect=select(Object.keys(clsNames),clsNames);
   if(key==='assignment'){
@@ -512,7 +532,18 @@ async function teacher(key,id,stamp) {
     for(const form of main.querySelectorAll('.grading'))bindForm(form,async(data,message)=>{await api('teacher/review/'+id,{...data,score:Number(data.score),student:form.dataset.student});writeStatus(message,'Đã lưu nhận xét.','success');});
     return;
   }
-  main.innerHTML=section('Quản lý lớp',tools+`<div class="teacher-grid">
+  main.innerHTML=section('Quản lý lớp',`<div class="staff-metrics">
+    <div><strong>${data.classes.length}</strong><span>Lớp đang hoạt động</span></div>
+    <div><strong>${new Set(data.students.map(student=>student.id)).size}</strong><span>Học viên</span></div>
+    <div><strong>${data.assignments.length}</strong><span>Buổi học</span></div>
+  </div><h2>Lớp đang hoạt động</h2>
+  <div class="staff-classes">${data.classes.map(c=>`<article class="card staff-class">
+    <span class="pill">${esc(names[c.level]||c.level)}</span><h3>${esc(c.title)}</h3>
+    <p>${data.students.filter(student=>student.class_id===c.id).length} học viên</p>
+    <details><summary>Xóa lớp</summary><p>Lớp sẽ được ẩn. Bài nộp được giữ lại và bạn có thể khôi phục lớp.</p>
+    <form class="form class-action" data-class="${esc(c.id)}"><button type="submit" class="staff-danger">Xác nhận xóa lớp</button>${status}</form></details>
+  </article>`).join('')}</div>${data.classes.length?'':'<p>Chưa có lớp. Tạo lớp ở mục bên dưới.</p>'}
+  <div class="teacher-grid tabs">
   <article class="card"><h3>Tạo lớp</h3><form class="form" id="new-class"><label>Tên lớp<input name="title" maxlength="120" required></label><label>Trình độ<select name="level">${select([...stages,...groups],names)}</select></label><button type="submit">Tạo lớp</button>${status}</form></article>
   <article class="card"><h3>Thêm học viên</h3><form class="form" id="enroll"><label>Lớp<select name="classId" required><option value="">Chọn lớp</option>${classSelect}</select></label><label>Email tài khoản học viên<input name="email" type="email" required></label><button type="submit">Thêm học viên</button>${status}</form></article>
   <article class="card"><h3>Tạo buổi học</h3><form class="form" id="new-assignment"><label>Lớp<select name="classId" required><option value="">Chọn lớp</option>${classSelect}</select></label><label>Tên buổi<input name="title" maxlength="120" required></label><button type="submit">Tạo bản nháp</button>${status}</form></article>
@@ -527,6 +558,10 @@ async function teacher(key,id,stamp) {
   };
   for(const selector of ['#filter-class','#filter-level','#filter-session','#filter-student'])$(selector).oninput=draw;
   draw();
+  for(const form of main.querySelectorAll('.class-action'))bindForm(form,async()=>{
+    await api('teacher/classes/'+encodeURIComponent(form.dataset.class),{action:'archive'});
+    await render();
+  });
   bindForm($('#new-class'),async data=>{await api('teacher/classes',data);await render();});
   bindForm($('#enroll'),async data=>{await api('teacher/enroll',data);await render();});
   bindForm($('#new-assignment'),async data=>{const result=await api('teacher/assignment',data);location.hash='teacher/assignment/'+result.id;});
@@ -538,6 +573,18 @@ async function render(){
   cleanup();cleanup=()=>{};
   const stamp=++view;
   const [path='home',key,id]=turn();
+  const isTeacher=state.user?.role==='teacher';
+  if(isTeacher&&['auth','start','assigned','paper'].includes(path)){
+    location.replace('#teacher');
+    return;
+  }
+  const staffMode=isTeacher&&path==='teacher';
+  document.body.classList.toggle('staff-mode',staffMode);
+  $('#teacher-nav').hidden=!staffMode;
+  for(const link of document.querySelectorAll('[data-staff-page]')){
+    if(staffMode&&link.dataset.staffPage===(['account','archive','leads'].includes(key)?key:'classes'))link.setAttribute('aria-current','page');
+    else link.removeAttribute('aria-current');
+  }
   $('#menu').setAttribute('aria-expanded','false');
   $('#nav').classList.remove('open');
   closeNavGroups();
@@ -568,7 +615,7 @@ async function render(){
     }
   } catch(error) {
     if(stamp!==view)return;
-    main.innerHTML=section('Chưa mở được trang','<p class="error">'+esc(error.message)+'</p>'+(error.status===403?needPlacement():button('home','Về trang chủ','outline')));
+    main.innerHTML=section('Chưa mở được trang','<p class="error">'+esc(error.message)+'</p>'+(staffMode?button('teacher','Về khu vực giảng viên','outline'):error.status===403?needPlacement():button('home','Về trang chủ','outline')));
   }
 }
 const nav=$('#nav');
@@ -630,6 +677,20 @@ document.addEventListener('keydown',event=>{
     closeMobileNav();
   }
 });
+$('#staff-logout').onclick=async()=>{
+  const control=$('#staff-logout');
+  control.disabled=true;
+  try {
+    await api('auth/logout',{});
+    lastResult=null;
+    await refresh();
+    location.hash='auth';
+  } catch(error) {
+    writeStatus($('.notice',$('#teacher-nav')),error.message,'error');
+  } finally {
+    control.disabled=false;
+  }
+};
 window.addEventListener('hashchange',()=>{window.scrollTo(0,0);void render();});
 try {await refresh();} catch {state={user:null,unlocked:false};}
 await render();
