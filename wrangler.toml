@@ -1,3 +1,8 @@
 name = "sunny-house-website"
 compatibility_date = "2026-11-01"
 pages_build_output_dir = "./public"
+
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "sunny-house"
+database_id = "814bdd08-a550-4f0e-a06f-695c2b55f46e"
