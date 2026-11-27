@@ -91,17 +91,28 @@ async function route(req,env,segments) {
     }
   }
   async function syncLead(lead) {
-    if(lead.synced||!env.LEADS_WEBHOOK||!env.LEADS_WEBHOOK_SECRET)return !!lead.synced;
+    if(lead.synced)return true;
+    if(!env.LEADS_WEBHOOK||!env.LEADS_WEBHOOK_SECRET) {
+      console.warn('Consultation sync: webhook URL or secret is missing.');
+      return false;
+    }
     try {
       const response=await fetch(env.LEADS_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
         id:lead.id,createdAt:lead.created_at,secret:env.LEADS_WEBHOOK_SECRET,...JSON.parse(lead.payload)
       }),signal:AbortSignal.timeout(12000)});
+      if(!response.ok||!response.headers.get('Content-Type')?.includes('application/json')) {
+        console.warn('Consultation sync: unexpected webhook response, HTTP '+response.status+'.');
+        return false;
+      }
       const result=await response.json();
-      if(response.ok&&result.ok) {
+      if(result?.ok===true) {
         await run('UPDATE leads SET synced=1 WHERE id=?',lead.id);
         return true;
       }
-    } catch { /* The durable lead remains available for retry. */ }
+      console.warn('Consultation sync: webhook did not confirm delivery.');
+    } catch {
+      console.warn('Consultation sync: request or delivery update failed.');
+    }
     return false;
   }
   if(scope==='consult'&&method==='POST') {
