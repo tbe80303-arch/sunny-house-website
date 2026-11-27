@@ -125,8 +125,42 @@ function home(anchor) {
   </div>`;
   if(anchor==='path'||anchor==='questions')scrollToSection(document.getElementById('home-'+anchor));
 }
-function about() {
-  main.innerHTML=section('Về SUNNY HOUSE','<article class="card"><h3>Ms Thủy · Founder SUNNY HOUSE</h3><p>Ms Thủy sinh năm 2000, tốt nghiệp ngành Ngôn ngữ Anh tại Trường Đại học Công nghiệp. Cô có chứng chỉ nghiệp vụ sư phạm cấp tiểu học và THCS, cùng chứng chỉ TESOL.</p><p>Cô có hơn 6 năm kinh nghiệm dạy trẻ mầm non, học sinh tiểu học và tiếng Anh giao tiếp cho người đi làm.</p>'+button('consult','Nhận tư vấn','gold')+'</article>');
+function about(anchor) {
+  main.innerHTML=`<div class="portfolio">
+  <section class="wrap portfolio-hero" aria-labelledby="intro">
+  <div class="portfolio-hero-copy">
+  <p class="portfolio-label">NGƯỜI SÁNG LẬP SUNNY HOUSE</p>
+  <h1 id="intro">Chào bạn,<br>mình là <em>Ms Thủy.</em></h1>
+  <p class="portfolio-lead">Mỗi học viên có một điểm bắt đầu khác nhau. Tại Sunny House, mình hướng dẫn bạn chọn lớp theo trình độ và luyện tiếng Anh qua những tình huống có thể dùng trong học tập, công việc và đời sống.</p>
+  <div class="actions"><a class="btn gold" href="#start">Làm bài đầu vào miễn phí</a><a class="text-link" href="#about/ho-so">Xem hồ sơ giảng dạy</a></div>
+  </div>
+  <figure class="portfolio-portrait"><img src="/images/ms-thuy-tesol.webp" alt="Ms Thủy mặc áo tốt nghiệp và cầm bìa chứng chỉ TESOL" width="850" height="830" fetchpriority="high"><figcaption>Ms Thủy trong trang phục tốt nghiệp</figcaption></figure>
+  </section>
+  <section class="portfolio-proof" id="ho-so" aria-labelledby="profile">
+  <div class="wrap portfolio-proof-grid">
+  <div><p class="portfolio-label">HỒ SƠ GIẢNG DẠY</p><h2 id="profile">Nền tảng chuyên môn</h2></div>
+  <dl class="portfolio-credentials">
+  <div><dt>Ngôn ngữ Anh</dt><dd>Tốt nghiệp ngành Ngôn ngữ Anh tại Trường Đại học Công nghiệp.</dd></div>
+  <div><dt>TESOL và nghiệp vụ sư phạm</dt><dd>Chứng chỉ giảng dạy tiếng Anh TESOL và chứng chỉ nghiệp vụ sư phạm cấp 1, cấp 2.</dd></div>
+  <div><dt>Hơn 6 năm giảng dạy</dt><dd>Kinh nghiệm dạy trẻ mầm non, học sinh tiểu học và tiếng Anh giao tiếp cho người đi làm.</dd></div>
+  </dl>
+  </div>
+  </section>
+  <section id="lop-hoc" class="wrap portfolio-courses" aria-labelledby="learn">
+  <h2 id="learn">Bạn muốn luyện kỹ năng nào?</h2>
+  <div class="portfolio-grid">
+  <article class="portfolio-card portfolio-cambridge"><span class="portfolio-art" aria-hidden="true">ABC</span><h3>Cambridge Young Learners</h3><p>Pre-A1 Starters, A1 Movers và A2 Flyers giúp học viên luyện bốn kỹ năng theo từng cấp độ.</p><a href="#courses">Xem các cấp độ Cambridge</a></article>
+  <article class="portfolio-card portfolio-global"><span class="portfolio-art" aria-hidden="true">6 · 7</span><h3>Global Success</h3><p>Củng cố từ vựng, ngữ pháp và phát âm theo các chủ đề trong chương trình lớp 6 hoặc 7.</p><a href="#course/global-success">Chọn lớp Global Success</a></article>
+  <article class="portfolio-card portfolio-debate"><span class="portfolio-art" aria-hidden="true">“ ”</span><h3>Kids Debate</h3><p>Tập nêu ý kiến, dùng ví dụ và phản biện lịch sự bằng tiếng Anh.</p><a href="#course/kids-debate">Xem lộ trình Kids Debate</a></article>
+  <article class="portfolio-card portfolio-teachers"><span class="portfolio-art" aria-hidden="true">Aa</span><h3>Tiếng Anh giao tiếp cho giáo viên</h3><p>Thực hành hướng dẫn lớp học, phản hồi bài và trao đổi với phụ huynh bằng tiếng Anh.</p><a href="#course/conversation">Xem lộ trình cho giáo viên</a></article>
+  </div>
+  </section>
+  <section class="wrap portfolio-next" aria-labelledby="begin">
+  <div><h2 id="begin">Bắt đầu từ trình độ của bạn</h2><p>Làm bài đầu vào để biết nên ôn kỹ năng nào. Bạn cũng có thể xem đề luyện trên Sunny House hoặc trao đổi trực tiếp với trung tâm về mục tiêu học.</p></div>
+  <div class="actions"><a class="btn gold" href="#start">Làm bài đầu vào</a><a class="btn outline" href="#practice">Xem đề luyện</a></div>
+  </section>
+  </div>`;
+  if(anchor==='ho-so')scrollToSection(document.getElementById(anchor));
 }
 function courseCard(key,description='') {
   return '<article class="card stage"><h3>'+esc(courseNames[key])+'</h3>'+
@@ -692,7 +726,7 @@ async function render(){
   try {
     switch(path) {
       case '':case 'home':home(key);break;
-      case 'about':about();break;
+      case 'about':about(key);break;
       case 'courses':courses();break;
       case 'course':courses(key);break;
       case 'auth':await auth(stamp);break;
