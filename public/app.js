@@ -1,3 +1,4 @@
+import {bindPageScroll,revealContent,scrollToSection} from './motion.js';
 import {catalog,vocab,sample} from './content.js';
 import {courses as courseData} from './courses.js';
 const $=(selector,root=document)=>root.querySelector(selector);
@@ -27,6 +28,7 @@ let view=0;
 let lastResult=null;
 let afterAuth='';
 let cleanup=()=>{};
+let stopReveals=()=>{};
 async function api(path,data,raw) {
   const res=await fetch('/api/'+path, data===undefined&&!raw?{}:raw?{method:'POST',body:raw,headers:{'Content-Type':raw.type}}:{method:'POST',body:JSON.stringify(data),headers:{'Content-Type':'application/json'}});
   const payload=await res.json();
@@ -58,9 +60,9 @@ function requireLogin(destination) {
 function needPlacement() {
   return '<p>Hãy hoàn thành bài đầu vào dành cho nhóm của bạn để mở các bài khác.</p>'+button('start','Làm bài đầu vào','gold');
 }
-function stagesGrid() {
+function stagesGrid(track=false) {
   const notes=['Làm quen từ và câu ngắn.','Nghe hội thoại và đọc mô tả.','Đọc hiểu câu chuyện và nghe lấy chi tiết.'];
-  return '<div class="grid">'+stages.map((key,i)=>'<article class="card stage"><h3>'+names[key]+'</h3><p>'+notes[i]+'</p>'+button('course/'+key,'Xem khóa học','outline')+'</article>').join('')+'</div>';
+  return '<div class="grid'+(track?' course-track':'')+'">'+stages.map((key,i)=>'<article class="card stage"><h3>'+names[key]+'</h3><p>'+notes[i]+'</p>'+button('course/'+key,'Xem khóa học','outline')+'</article>').join('')+'</div>';
 }
 function home(anchor) {
   main.innerHTML=`<div class="landing">
@@ -76,12 +78,11 @@ function home(anchor) {
     <h2>Các cấp độ khác nhau, lộ trình học rõ ràng</h2>
     <p class="intro">Xem nội dung học, thời lượng và học phí để chọn khóa phù hợp.</p>
     <h3>Chương trình Cambridge</h3>
-    ${stagesGrid()}
+    ${stagesGrid(true)}
     <div class="tabs">
       <h3>Các lộ trình khác</h3>
-      <div class="grid two">
-        ${courseCard('global-6','Học từ vựng, ngữ pháp và phát âm theo 12 chủ đề lớp 6.')}
-        ${courseCard('global-7','Học theo 12 chủ đề lớp 7 và ôn tập sau mỗi ba Unit.')}
+      <div class="grid course-track">
+        ${globalSuccessCard()}
         ${courseCard('kids-debate','Luyện nêu ý kiến, đưa lý do và tranh biện theo đội bằng tiếng Anh.')}
         ${courseCard('conversation','Thực hành hướng dẫn lớp học và trao đổi với phụ huynh bằng tiếng Anh.')}
       </div>
@@ -103,14 +104,14 @@ function home(anchor) {
   <section class="section" id="home-questions"><div class="wrap landing-split">
     <div><p class="landing-label">DÀNH CHO PHỤ HUYNH</p><h2>Câu hỏi thường gặp</h2></div>
     <div class="landing-faq">
-      <details><summary>Con nên bắt đầu ở cấp độ nào?</summary><p>Hãy cho con làm bài đầu vào miễn phí. Bài cho học sinh tiểu học gợi ý Starters, Movers hoặc Flyers theo kết quả nghe và đọc.</p></details>
-      <details><summary>Bài đang làm có được lưu không?</summary><p>Khi đăng nhập, tiến độ có thể đồng bộ để con tiếp tục trên thiết bị khác.</p></details>
-      <details><summary>Xem học phí và hỏi về lớp học ở đâu?</summary><p>Xem từng trang <a href="#courses">khóa học</a> hoặc gửi yêu cầu tư vấn để xác nhận lớp và mức học phí đang áp dụng.</p></details>
+      <details name="home-faq"><summary>Con nên bắt đầu ở cấp độ nào?</summary><p>Hãy cho con làm bài đầu vào miễn phí. Bài cho học sinh tiểu học gợi ý Starters, Movers hoặc Flyers theo kết quả nghe và đọc.</p></details>
+      <details name="home-faq"><summary>Bài đang làm có được lưu không?</summary><p>Khi đăng nhập, tiến độ có thể đồng bộ để con tiếp tục trên thiết bị khác.</p></details>
+      <details name="home-faq"><summary>Xem học phí và hỏi về lớp học ở đâu?</summary><p>Xem từng trang <a href="#courses">khóa học</a> hoặc gửi yêu cầu tư vấn để xác nhận lớp và mức học phí đang áp dụng.</p></details>
     </div>
   </div></section>
   <section class="section landing-cta"><div class="wrap landing-split"><div><h2>Trao đổi về lộ trình của con</h2><p>Cho Ms Thủy biết độ tuổi và mục tiêu học để được tư vấn bước tiếp theo.</p></div><div class="actions">${button('consult','Nhận tư vấn','gold')}${button('about','Giới thiệu Ms Thủy','outline')}</div></div></section>
   </div>`;
-  if(anchor==='path'||anchor==='questions')document.getElementById('home-'+anchor)?.scrollIntoView();
+  if(anchor==='path'||anchor==='questions')scrollToSection(document.getElementById('home-'+anchor));
 }
 function about() {
   main.innerHTML=section('Về SUNNY HOUSE','<article class="card"><h3>Ms Thủy · Founder SUNNY HOUSE</h3><p>Ms Thủy sinh năm 2000, tốt nghiệp ngành Ngôn ngữ Anh tại Trường Đại học Công nghiệp. Cô có chứng chỉ nghiệp vụ sư phạm cấp tiểu học và THCS, cùng chứng chỉ TESOL.</p><p>Cô có hơn 6 năm kinh nghiệm dạy trẻ mầm non, học sinh tiểu học và tiếng Anh giao tiếp cho người đi làm.</p>'+button('consult','Nhận tư vấn','gold')+'</article>');
@@ -119,6 +120,10 @@ function courseCard(key,description='') {
   return '<article class="card stage"><h3>'+esc(courseNames[key])+'</h3>'+
     (description?'<p>'+esc(description)+'</p>':'')+
     button('course/'+key,'Xem khóa học','outline')+'</article>';
+}
+function globalSuccessCard() {
+  return '<article class="card stage"><h3>Global Success</h3><p>Lộ trình riêng cho lớp 6 và lớp 7.</p>'+
+    button('course/global-success','Chọn lớp','outline')+'</article>';
 }
 function courses(key) {
   if(key==='global-success'){
@@ -129,8 +134,7 @@ function courses(key) {
   if(!key){
     main.innerHTML=section('Khóa học tại SUNNY HOUSE',stagesGrid()+
       '<div class="tabs grid">'+courseCard('conversation')+
-      '<article class="card stage"><h3>Global Success</h3><p>Lộ trình riêng cho lớp 6 và lớp 7.</p>'+
-      button('course/global-success','Chọn lớp','outline')+'</article>'+courseCard('kids-debate')+
+      globalSuccessCard()+courseCard('kids-debate')+
       '<article class="card"><h3>Kèm 1–1</h3>'+button('consult/one','Nhận tư vấn','outline')+'</article></div>');
     return;
   }
@@ -653,6 +657,7 @@ function missing() {
   main.innerHTML=section('Không tìm thấy trang',button('home','Về trang chủ','outline'));
 }
 async function render(){
+  stopReveals();
   cleanup();cleanup=()=>{};
   const stamp=++view;
   const [path='home',key,id]=turn();
@@ -699,6 +704,8 @@ async function render(){
   } catch(error) {
     if(stamp!==view)return;
     main.innerHTML=section('Chưa mở được trang','<p class="error">'+esc(error.message)+'</p>'+(staffMode?button('teacher','Về khu vực giảng viên','outline'):error.status===403?needPlacement():button('home','Về trang chủ','outline')));
+  } finally {
+    if(stamp===view && !staffMode)stopReveals=revealContent(main);
   }
 }
 const nav=$('#nav');
@@ -774,6 +781,10 @@ $('#staff-logout').onclick=async()=>{
     control.disabled=false;
   }
 };
-window.addEventListener('hashchange',()=>{window.scrollTo(0,0);void render();});
+bindPageScroll($('.header'),$('#back-to-top'));
+window.addEventListener('hashchange',()=>{
+  if(!/^#home\/(path|questions)$/.test(location.hash))window.scrollTo(0,0);
+  void render();
+});
 try {await refresh();} catch {state={user:null,unlocked:false};}
 await render();
