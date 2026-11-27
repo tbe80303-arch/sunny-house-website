@@ -58,7 +58,7 @@ function home() {
   <div><h1>Học tiếng Anh theo lộ trình phù hợp cùng <em>SUNNY HOUSE</em></h1>
   <p>Cùng MR Thủy xác định điểm bắt đầu, chọn lộ trình và luyện tiếng Anh qua bài nghe, từ vựng và trò chơi.</p>
   <div class="actions">${button('start','Làm bài đầu vào miễn phí','gold')}${button('auth','Đăng nhập luyện đề','outline')}</div><a class="under" href="#courses">Xem lộ trình khóa học</a></div>
-  <div class="figure"><span class="mark" aria-hidden="true">☀</span><div class="nametag">MR Thủy · Founder SUNNY HOUSE</div></div>
+  <figure class="figure"><img class="founder-portrait" src="/images/mr-thuy-tesol.webp" alt="MR Thủy mặc áo tốt nghiệp và cầm bìa chứng chỉ TESOL" fetchpriority="high"><figcaption class="nametag">MR Thủy · Founder SUNNY HOUSE</figcaption></figure>
   ${credentials}</div></section>
   <section class="section"><div class="wrap"><h2>Bắt đầu từ đâu?</h2><div class="grid">
   <article class="card"><span class="step">1</span><h3>Làm bài đầu vào</h3><p>Chọn nhóm người học để nhận bài phù hợp.</p><a href="#start">Bắt đầu làm bài</a></article>

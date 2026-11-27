@@ -51,6 +51,6 @@ Giáo viên mở **Tài khoản → Quản lý lớp**. Tạo lớp theo cấp �
 
 ## Phạm vi cần hoàn thiện trước khi bàn giao production
 
-- Trang Starters dựa trên Google Doc **STARTERS** của SUNNY HOUSE. Cần đối chiếu với tệp Word chính thức khi nhận được. Trang Movers và Flyers chờ nội dung và học phí từ tệp Word đó. Chân dung MR Thủy và các ảnh mẫu vẫn cần được cung cấp.
+- Trang Starters dựa trên Google Doc **STARTERS** của SUNNY HOUSE. Cần đối chiếu với tệp Word chính thức khi nhận được. Trang Movers và Flyers chờ nội dung và học phí từ tệp Word đó. Trang chủ dùng chân dung MR Thủy từ ảnh tốt nghiệp do người dùng cung cấp, đã tách nền. Các ảnh mẫu bố cục vẫn cần được cung cấp.
 - 30 bài luyện là bài ngắn 5 câu, gồm Nghe, Đọc và Viết. Cần biên soạn thêm câu, tranh và kiểu bài để đạt 15–20 phút mỗi đề. 30 bộ trên lớp hiện là các hoạt động ngắn có mục tiêu, từ vựng, hai câu chấm tự động và bài vận dụng. MP3 tiếng Anh dùng giọng tổng hợp Flite, đổi giọng theo lượt hội thoại. Hướng dẫn tiếng Việt cho mầm non là tệp MP3 riêng.
 - Kiểm thử cục bộ đã chạy cho D1, R2, xác thực, khóa bài, tiếp tục trên thiết bị khác, chống nộp trùng, giáo viên và form tư vấn. Phiên kiểm thử trình duyệt chưa mở được qua relay nên các kích thước 360, 390, 768 px và thao tác chạm ba game cần nghiệm thu trên trình duyệt. Production, Google Sheets và gửi email cần quyền của chủ dịch vụ trước khi kiểm tra đầu-cuối.
