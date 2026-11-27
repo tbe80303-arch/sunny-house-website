@@ -1,42 +1,62 @@
-export const startersCourse = {
-  stages:[
-    {title:'Làm quen với tiếng Anh và thế giới xung quanh',units:[
-      ['Hello!','Chào hỏi, nói tên và tuổi, đánh vần tên, số 1–20 và màu sắc.'],
-      ['I Love Animals!','Gọi tên con vật, mô tả màu và vị trí với in, on, next to.'],
-      ['At Home','Gọi tên phòng và đồ vật, nghe và mô tả vị trí trong nhà.'],
-      ['Family and Friends','Giới thiệu người thân và bạn bè, dùng his, her và sở hữu cách.'],
-      ['Food!','Nhận biết thức ăn, nói về bữa ăn, mời và gọi món.'],
-      ['I Like Clothes','Gọi tên trang phục và nói một người đang mặc gì.']
-    ],review:'Ôn Hello đến Unit 5 và làm quen với Listening và Reading & Writing.'},
-    {title:'Phát triển khả năng mô tả, diễn đạt và giao tiếp',units:[
-      ['Look at Us!','Mô tả bộ phận cơ thể và ngoại hình bằng have got và has got.'],
-      ['We Love School!','Gọi tên đồ dùng học tập và mô tả hoạt động đang diễn ra.'],
-      ['In the Playground','Nói về thể thao và khả năng với can và can’t.'],
-      ['My Hobbies','Hỏi đáp về sở thích với like, love hoặc enjoy và động từ thêm -ing.'],
-      ['Your Day','Kể hoạt động hằng ngày bằng hiện tại đơn và hỏi đáp với do, does.']
-    ],review:'Ôn Hello đến Unit 10, củng cố mẫu câu, nghe, đọc mô tả ngắn và trả lời câu hỏi cá nhân.'},
-    {title:'Mở rộng vốn từ và vận dụng trong tình huống thực tế',units:[
-      ['In the Street','Tả phương tiện, người và hoạt động ở đường phố, dùng danh từ số nhiều bất quy tắc.'],
-      ['My Grandparents','Nói về ông bà và hoạt động trong nhà, đưa ra đề nghị với Let’s.'],
-      ['Going to the Zoo','Nói về động vật, địa điểm và hoạt động khi đi tham quan.'],
-      ['Happy Birthday!','Mô tả quà tặng và hỏi đồ vật thuộc về ai.'],
-      ['At the Beach','Dùng từ chỉ đồ vật và hoạt động để mô tả cảnh biển.']
-    ],review:'Tổng ôn từ vựng, ngữ pháp, Listening, Reading & Writing và Speaking. Làm quen với dạng đề Starters.'}
-  ],
-  skills:[
-    ['Nghe','Nhận diện từ theo chủ đề, số, màu, tên, đồ vật, hành động và vị trí. Nghe rồi tô màu, nối tranh hoặc chọn đáp án.'],
-    ['Đọc','Nhận diện và hiểu từ qua tranh, đọc câu và đoạn ngắn, phân biệt câu hỏi với câu trả lời, nối từ với tranh.'],
-    ['Viết','Viết đúng chính tả, điền chữ hoặc từ còn thiếu, sắp xếp từ, viết câu ngắn theo tranh.'],
-    ['Nói','Rèn phát âm và âm cuối, hỏi đáp cá nhân và theo cặp, mô tả tranh và trả lời bằng câu hoàn chỉnh.']
-  ],
-  comparison:[
-    ['Sĩ số tối đa','3 học sinh/lớp','6 học sinh/lớp'],
-    ['Thời lượng mỗi buổi','75 phút/buổi','75 phút/buổi'],
-    ['Học phí cho 8 buổi','1.500.000đ','1.000.000đ'],
-    ['Sửa bài tập không giới hạn','Có','Có'],
-    ['Kèm riêng 1:1 khi chưa hiểu hoặc chưa theo kịp','Có','Có'],
-    ['Tài liệu Global Success bổ trợ thường xuyên','Có','—'],
-    ['Tài liệu và thực hành 4 kỹ năng','Tài liệu củng cố cả 4 kỹ năng','Theo lộ trình Starters'],
-    ['Tặng tài khoản website luyện đề Starters, IOE và Global Success','Có','—']
-  ]
+export const courses = {
+  starters: {
+    textbook: 'Get Ready for Starters – Second Edition (Oxford)',
+    overview: 'Dành cho học sinh tiểu học ở trình độ Pre-A1. Chương trình gồm 15 chủ đề, chia thành ba giai đoạn.',
+    stages: [
+      {
+        title: 'Thế giới quanh con',
+        topics: 'Chào hỏi, động vật, ngôi nhà, gia đình, đồ ăn và quần áo.',
+        skills: 'Đánh vần tên, giới thiệu các thành viên trong gia đình qua hình ảnh và mô tả vị trí đồ vật.',
+        example: 'The cat is under the table.',
+        review: 'Luyện nghe và dạng bài Reading & Writing của Starters.'
+      },
+      {
+        title: 'Một ngày của con',
+        topics: 'Bộ phận cơ thể, trường học, sân chơi, sở thích và hoạt động hằng ngày.',
+        skills: 'Mô tả người, nói về thói quen, hỏi và trả lời về sở thích.',
+        example: 'Do you like playing football?',
+        review: 'Nghe lấy thông tin, đọc mô tả ngắn và trả lời câu hỏi cá nhân.'
+      },
+      {
+        title: 'Cùng con khám phá',
+        topics: 'Đường phố, ông bà, sở thú, sinh nhật và bãi biển.',
+        skills: 'Mời bạn cùng đi chơi, hỏi về chủ nhân món quà và kể chuyện theo tranh.',
+        example: "They're eating ice creams.",
+        review: 'Hệ thống 15 chủ đề và làm quen đầy đủ với Listening, Reading & Writing và Speaking.'
+      }
+    ],
+    assessment: 'Trước khi xếp lớp, giáo viên kiểm tra vốn từ, khả năng nghe hiểu, phản hồi nói, đọc và viết. Phụ huynh nhận phản hồi chi tiết sau mỗi 16 buổi học.',
+    fees: [
+      ['Class A', 'Tối đa 3 học viên', '75 phút/buổi', '1.500.000đ/8 buổi'],
+      ['Class B', 'Tối đa 6 học viên', '75 phút/buổi', '1.000.000đ/8 buổi']
+    ],
+    benefits: [
+      'Được chữa bài tập không giới hạn.',
+      'Được hỗ trợ học 1:1 để củng cố bài khi cần.',
+      'Có tài liệu bổ trợ Global Success và tài liệu luyện tập 4 kỹ năng.',
+      'Được cung cấp tài khoản luyện tập trên website theo các dạng Starters, IOE và Global Success.'
+    ]
+  },
+  movers: {
+    textbook: 'Get Ready for Movers – Oxford University Press, Second Edition',
+    overview: 'Chương trình A1 gồm 12 chủ đề chính, phát triển vốn từ vựng và ngữ pháp ở trình độ cao hơn Starters.',
+    structure: ['Phần Introduction.', '12 Units theo chủ đề.', '3 phần Revision.', 'Bài luyện theo định dạng đề thi Cambridge Movers sau từng nhóm nội dung.'],
+    source: 'Vocabulary and Grammar Index của Oxford University Press.',
+    fees: [
+      ['Class A', 'Tối đa 8 học viên', '1 giờ 45 phút/buổi', '1.200.000đ/16 buổi'],
+      ['Class B', 'Tối đa 3 học viên', '1 giờ 45 phút/buổi', '3.200.000đ/16 buổi']
+    ],
+    feeNote: 'Mức học phí tham khảo từ thông tin chương trình đã trao đổi trước đó. Vui lòng liên hệ SUNNY HOUSE để xác nhận mức đang áp dụng.'
+  },
+  flyers: {
+    textbook: 'Get Ready for Flyers – Oxford University Press, Second Edition',
+    overview: 'Chương trình A2 theo lộ trình Cambridge Flyers.',
+    structure: ['Phần Introduction.', '12 Units theo chủ đề.', '3 phần Revision.', 'Bài luyện thi Cambridge Flyers sau từng nhóm nội dung.'],
+    source: 'Vocabulary and Grammar Index của Oxford University Press.',
+    fees: [
+      ['Class A', 'Tối đa 8 học viên', '1 giờ 45 phút/buổi', '1.400.000đ/16 buổi'],
+      ['Class B', 'Tối đa 3 học viên', '1 giờ 45 phút/buổi', '3.750.000đ/16 buổi']
+    ],
+    feeNote: 'Mức học phí tham khảo từ thông tin chương trình đã trao đổi trước đó. Vui lòng liên hệ SUNNY HOUSE để xác nhận mức đang áp dụng.'
+  }
 };

@@ -7,3 +7,5 @@
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
 .grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}.course-compare table{width:100%;border-collapse:collapse;text-align:left;table-layout:fixed}.course-compare th,.course-compare td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top;overflow-wrap:anywhere}.course-compare thead th{background:#e3f4ec}.course-compare th:first-child{width:42%}.course-compare tr:last-child>*{border-bottom:0}.card summary{cursor:pointer;font-weight:750}.card li+li{margin-top:8px}
 @media(max-width:640px){.grid.two{grid-template-columns:1fr}.course-compare th,.course-compare td{padding:6px 4px;font-size:.875rem}}
+
+.course-compare .fee-note{margin:12px 0 0;color:var(--muted)}

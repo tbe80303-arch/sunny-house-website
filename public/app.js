@@ -1,5 +1,5 @@
 import {catalog,vocab,sample} from './content.js';
-import {startersCourse} from './courses.js';
+import {courses as courseData} from './courses.js';
 const $=(selector,root=document)=>root.querySelector(selector);
 const main=$('#main');
 const names={starters:'Pre A1 Starters',movers:'A1 Movers',flyers:'A2 Flyers',preschool:'Mầm non',primary:'Tiểu học',middle:'THCS',high:'THPT',college:'Sinh viên',work:'Người đi làm'};
@@ -72,30 +72,35 @@ function about() {
 function courses(key) {
   if(!key){main.innerHTML=section('Khóa học tại SUNNY HOUSE',stagesGrid()+'<div class="tabs grid"><div class="card"><h3>Kèm 1–1</h3></div><div class="card"><h3>Tiếng Anh giao tiếp</h3></div></div>');return;}
   if(!stages.includes(key))return missing();
-  if(key==='starters') {
-    const c=startersCourse;
-    main.innerHTML=section(names[key],`
-      <p class="intro">Get Ready for Starters, Second Edition của Oxford University Press. Lộ trình gồm 15 chủ đề chính, kết hợp từ vựng, ngữ pháp, bốn kỹ năng và các dạng bài Cambridge Starters.</p>
-      <div class="actions tabs">${button('consult/starters','Nhận tư vấn khóa này','gold')}${button('courses','Xem các khóa học','outline')}</div>
-      <h2>So sánh hai mô hình lớp học</h2>
-      <div class="card course-compare"><table><thead><tr><th scope="col">Quyền lợi</th><th scope="col">Lớp A · Chuyên sâu</th><th scope="col">Lớp B · Tiêu chuẩn</th></tr></thead>
-      <tbody>${c.comparison.map(([label,a,b])=>'<tr><th scope="row">'+esc(label)+'</th><td>'+esc(a)+'</td><td>'+esc(b)+'</td></tr>').join('')}</tbody></table></div>
-      <div class="grid two tabs">
-        <article class="card"><h3>Lớp A phù hợp với ai?</h3><p>Các bé cần được theo sát, muốn xây nền tảng Starters và củng cố tiếng Anh ở trường. Tài liệu Global Success và tài khoản website là quyền lợi bổ sung bên cạnh giáo trình chính. Học viên được luyện thêm để chuẩn bị cho bài kiểm tra ở trường.</p></article>
-        <article class="card"><h3>Lớp B phù hợp với ai?</h3><p>Các bé muốn học Starters trong nhóm nhỏ, có giáo viên hỗ trợ khi gặp khó khăn. Trên lớp có trò chơi, giao tiếp và hoạt động tương tác. Giáo viên hướng dẫn ôn và vận dụng sau mỗi chủ đề.</p></article>
-      </div>
-      <h2>Ba giai đoạn học</h2>
-      <div class="stack">${c.stages.map(stage=>'<details class="card"><summary>'+esc(stage.title)+'</summary><ul>'+stage.units.map(([topic,detail])=>'<li><b>'+esc(topic)+'</b> · '+esc(detail)+'</li>').join('')+'</ul><p>'+esc(stage.review)+'</p></details>').join('')}</div>
-      <h2 class="tabs">Bốn kỹ năng</h2>
-      <div class="grid two">${c.skills.map(([name,text])=>'<article class="card"><h3>'+esc(name)+'</h3><p>'+esc(text)+'</p></article>').join('')}</div>
-      <article class="card tabs"><h3>Xếp lớp và báo cáo tiến độ</h3><p>Trước khi xếp lớp, giáo viên đánh giá vốn từ, nghe hiểu, phản xạ nói, đọc và viết để xác định mức phù hợp và phần nền tảng cần củng cố.</p><p>Sau 16 buổi, báo cáo gửi phụ huynh nhận xét từ vựng, ngữ pháp, nghe hiểu, phát âm, diễn đạt, kết quả bài tập, lỗi thường gặp và nội dung cần cải thiện.</p>
-      <p>Thông tin theo tài liệu STARTERS của SUNNY HOUSE.</p></article>
-    `);
-    return;
-  }
-
-  main.innerHTML=section(names[key],'<div class="card"><p>Thông tin chi tiết và học phí đang chờ tài liệu chính thức của SUNNY HOUSE.</p><div class="actions">'+button('consult/'+key,'Nhận tư vấn khóa này','gold')+button('courses','Xem các khóa học','outline')+'</div></div>');
+  const course=courseData[key];
+  const list=items=>'<ul>'+items.map(item=>'<li>'+esc(item)+'</li>').join('')+'</ul>';
+  const route=course.stages
+    ? '<div class="stack">'+course.stages.map((stage,i)=>`<details class="card" ${i===0?'open':''}>
+      <summary>Giai đoạn ${i+1} · ${esc(stage.title)}</summary>
+      <p><strong>Chủ đề.</strong> ${esc(stage.topics)}</p>
+      <p><strong>Kỹ năng.</strong> ${esc(stage.skills)}</p>
+      <p lang="en">“${esc(stage.example)}”</p>
+      <p><strong>Ôn tập.</strong> ${esc(stage.review)}</p>
+    </details>`).join('')+'</div>'
+    : '<article class="card">'+list(course.structure)+'<p>Nguồn đối chiếu theo tài liệu khóa học: '+esc(course.source)+'</p></article>';
+  main.innerHTML=section(names[key],`
+    <p class="intro">${esc(course.overview)}</p>
+    <p><strong>Giáo trình.</strong> ${esc(course.textbook)}</p>
+    <div class="actions tabs">${button('consult/'+key,'Nhận tư vấn khóa này','gold')}${button('courses','Xem các khóa học','outline')}</div>
+    <h2>So sánh học phí theo lớp</h2>
+    <div class="card course-compare">
+      <table aria-label="So sánh Class A và Class B">
+        <thead><tr><th scope="col">Thông tin lớp</th>${course.fees.map(([label])=>'<th scope="col">'+esc(label)+'</th>').join('')}</tr></thead>
+        <tbody>${['Sĩ số','Thời lượng','Học phí'].map((label,i)=>'<tr><th scope="row">'+label+'</th>'+course.fees.map(fee=>'<td>'+esc(fee[i+1])+'</td>').join('')+'</tr>').join('')}</tbody>
+      </table>
+      ${course.feeNote?'<p class="fee-note">'+esc(course.feeNote)+'</p>':''}
+    </div>
+    <h2 class="tabs">Lộ trình học</h2>${route}
+    ${course.assessment?'<article class="card tabs"><h3>Đánh giá và theo dõi</h3><p>'+esc(course.assessment)+'</p></article>':''}
+    ${course.benefits?'<article class="card tabs"><h3>Quyền lợi học viên</h3>'+list(course.benefits)+'</article>':''}
+  `);
 }
+
 async function auth(stamp) {
   if(state.user) {
     const history=await api('history');
