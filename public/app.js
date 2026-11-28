@@ -158,20 +158,32 @@ function courses(key) {
       <summary>${esc(stage.title)}</summary>
       <div class="stack tabs">${stage.units.map(({title,lines})=>'<details class="card"><summary>'+esc(title)+'</summary>'+list(lines)+'</details>').join('')}</div>
     </details>`).join('');
-  const compare=Boolean(course.benefits);
-  const feeTable=course.fees ? `<div class="card course-compare"><table aria-label="${compare?'So sánh học phí và quyền lợi':'Lịch học và học phí'}">
-    ${compare?'<thead><tr><th scope="col">Thông tin lớp</th><th scope="col">Lớp A</th><th scope="col">Lớp B</th></tr></thead>':''}
-    <tbody>${course.fees.map(([label,...values])=>'<tr><th scope="row">'+esc(label)+'</th>'+values.map(value=>'<td>'+esc(value)+'</td>').join('')+'</tr>').join('')}</tbody>
-    </table></div>` : '<article class="card"><p>Liên hệ trung tâm hoặc nhắn Zalo để được tư vấn học phí.</p><a class="btn outline" href="https://zalo.me/0343027537">Nhắn Zalo</a></article>';
+  const table=({columns,rows},label)=>`<div class="course-compare">
+    <table aria-label="${esc(label)}">
+      ${columns?'<thead><tr>'+columns.map(value=>'<th scope="col">'+esc(value)+'</th>').join('')+'</tr></thead>':''}
+      <tbody>${rows.map(([heading,...values])=>'<tr><th scope="row">'+esc(heading)+'</th>'+
+        values.map(value=>'<td>'+esc(value||'—')+'</td>').join('')+'</tr>').join('')}</tbody>
+    </table>
+  </div>`;
+  const feeMarkup=course.feeSections
+    ? '<div class="stack">'+course.feeSections.map(({title,blocks})=>'<article class="card course-fees">'+
+      '<h3>'+esc(title)+'</h3>'+blocks.map(block=>{
+        if(typeof block!=='string')return table(block,title);
+        if(/^(?:STANDARD CLASS|PREMIUM SMALL CLASS|Học phí|Quyền lợi học viên)$/.test(block))return '<h4>'+esc(block)+'</h4>';
+        return '<p>'+esc(block)+'</p>';
+      }).join('')+'</article>').join('')+'</div>'
+    : '<article class="card">'+table({rows:course.fees},'Lịch học và học phí')+'</article>';
   const index=key.startsWith('global-')?'course/global-success':'courses';
   main.innerHTML=section(esc(courseNames[key]),`
     <p class="intro">${esc(course.overview)}</p>
     ${course.textbook?'<p><strong>Giáo trình.</strong> '+esc(course.textbook)+'</p>':''}
     <div class="actions tabs">${button('consult/'+key,'Nhận tư vấn khóa này','gold')}${button(index,index==='courses'?'Xem các khóa học':'Xem các lớp Global Success','outline')}</div>
-    <h2>${compare?'So sánh học phí theo lớp':'Lịch học và học phí'}</h2>${feeTable}
-    <h2 class="tabs">Lộ trình học</h2><div class="stack">${stagesMarkup}</div>
+    <h2>Lịch học và học phí</h2>${feeMarkup}
+    ${course.feeNote?'<p class="fee-note">'+esc(course.feeNote)+'</p>':''}
+    <h2 class="tabs">Lộ trình học</h2>
+    ${course.roadmapNote?'<p class="intro">'+esc(course.roadmapNote)+'</p>':''}
+    <div class="stack">${stagesMarkup}</div>
     ${course.skills?'<h2 class="tabs">Bốn kỹ năng được rèn luyện</h2><div class="grid two">'+cards(course.skills)+'</div>':''}
-    ${course.benefits?'<h2 class="tabs">Quyền lợi theo lớp</h2><div class="grid two">'+cards(course.benefits)+'</div>':''}
     ${course.assessment?'<article class="card tabs"><h2>Xếp lớp và theo dõi tiến độ</h2>'+list(course.assessment)+'</article>':''}
   `);
 }

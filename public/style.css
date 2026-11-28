@@ -9,3 +9,10 @@
 @media(max-width:640px){.grid.two{grid-template-columns:1fr}.course-compare th,.course-compare td{padding:6px 4px;font-size:.875rem}}
 
 .course-compare .fee-note{margin:12px 0 0;color:var(--muted)}
+
+.course-fees p { white-space: pre-line; margin: 0 0 8px; }
+.course-fees p:last-child { margin-bottom: 0; }
+.course-fees h4 { margin: 16px 0 6px; }
+.course-fees .course-compare { margin-bottom: 14px; }
+.course-fees .course-compare:last-child { margin-bottom: 0; }
+.section .fee-note { margin-top: 12px; color: var(--muted); }

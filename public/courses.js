@@ -1,4 +1,6 @@
 import {roadmaps} from './course-roadmaps.js';
+import {courseFees} from './course-fees.js';
+import {teacherRoadmap} from './teacher-roadmap.js';
 
 const sessions = (start, lessons) => lessons.map(([title, ...lines], index) => ({
   title: 'Buổi ' + (start + index) + ' · ' + title,
@@ -12,10 +14,10 @@ const fixedFees = amount => [
   ['Thời điểm thu học phí', 'Buổi thứ 12']
 ];
 
-const cambridge = (key, textbook, overview, fees) => ({
+const cambridge = (key, textbook, overview) => ({
   textbook: textbook + ' – Oxford University Press, Second Edition',
   overview,
-  fees,
+  feeSections: courseFees[key],
   ...roadmaps[key]
 });
 
@@ -29,57 +31,18 @@ const globalSuccess = grade => ({
 
 export const courses = {
   starters: cambridge('starters', 'Get Ready for Starters',
-    'Chương trình Pre-A1 gồm phần Hello, 15 chủ đề và 3 phần ôn tập, kết hợp luyện bốn kỹ năng theo định dạng Cambridge Starters.',
-    [
-      ['Sĩ số tối đa', '3 học sinh', '6 học sinh'],
-      ['Số buổi', '8 buổi', '8 buổi'],
-      ['Thời lượng', '75 phút/buổi', '75 phút/buổi'],
-      ['Học phí', '1.500.000đ', '1.000.000đ'],
-      ['Sửa bài không giới hạn', 'Có', 'Có'],
-      ['Kèm riêng 1:1 khi cần', 'Có', 'Có'],
-      ['Tài liệu Global Success bổ trợ thường xuyên', 'Có', '—'],
-      ['Tài liệu luyện 4 kỹ năng', 'Tài liệu bổ trợ', 'Theo lộ trình Starters'],
-      ['Tài khoản website luyện đề Starters, IOE và Global Success', 'Có', '—']
-    ]),
+    'Chương trình Pre-A1 gồm phần Hello, 15 chủ đề và 3 phần ôn tập, kết hợp luyện bốn kỹ năng theo định dạng Cambridge Starters.'),
   movers: cambridge('movers', 'Get Ready for Movers',
-    'Chương trình A1 gồm phần Introduction, 12 Unit và 3 phần ôn tập theo định dạng Cambridge Movers. Nội dung đối chiếu với Vocabulary & Grammar Index của Oxford.',
-    [
-      ['Sĩ số tối đa', '8 học sinh', '3 học sinh'],
-      ['Số buổi', '16 buổi', '16 buổi'],
-      ['Thời lượng', '105 phút/buổi', '105 phút/buổi'],
-      ['Học phí', '1.200.000đ', '3.200.000đ'],
-      ['Học phí/buổi', '75.000đ', '200.000đ']
-    ]),
+    'Chương trình A1 gồm phần Introduction, 12 Unit và 3 phần ôn tập theo định dạng Cambridge Movers. Nội dung đối chiếu với Vocabulary & Grammar Index của Oxford.'),
   flyers: cambridge('flyers', 'Get Ready for Flyers',
-    'Chương trình A2 gồm phần Introduction, 12 Unit và 3 phần ôn tập theo định dạng Cambridge Flyers. Nội dung đối chiếu với Vocabulary & Grammar Index của Oxford.',
-    [
-      ['Sĩ số tối đa', '8 học sinh', '3 học sinh'],
-      ['Số buổi', '16 buổi', '16 buổi'],
-      ['Thời lượng', '105 phút/buổi', '105 phút/buổi'],
-      ['Học phí', '1.400.000đ', '3.750.000đ'],
-      ['Học phí/buổi', '87.500đ', '234.375đ']
-    ]),
+    'Chương trình A2 gồm phần Introduction, 12 Unit và 3 phần ôn tập theo định dạng Cambridge Flyers. Nội dung đối chiếu với Vocabulary & Grammar Index của Oxford.'),
   conversation: {
     name: 'Tiếng Anh giao tiếp cho giáo viên',
     overview: 'Lộ trình thực hành tiếng Anh để giao tiếp hằng ngày, điều hành lớp học và trao đổi với phụ huynh, đồng nghiệp.',
-    stages: [
-      {title: 'Giao tiếp hằng ngày', units: sessions(1, [
-        ['My Daily Routine', 'Dựa trên bài mẫu, luyện hiện tại đơn và cách kể lịch sinh hoạt theo trình tự.', 'Viết một đoạn về thói quen hằng ngày, sau đó kể lại và hỏi đáp theo cặp.'],
-        ['My Teaching Day', 'Giới thiệu môn dạy, lịch học và các công việc chuẩn bị bài. Luyện hỏi giờ và sắp lịch.', 'Thực hành trao đổi lịch dạy với đồng nghiệp và ghi lại các mốc giờ.']
-      ])},
-      {title: 'Tiếng Anh trong lớp học', units: sessions(3, [
-        ['Starting and Closing a Lesson', 'Chào lớp, điểm danh, giới thiệu mục tiêu và chốt nội dung.', 'Dẫn phần mở đầu và kết thúc một tiết học ngắn.'],
-        ['Giving Clear Instructions', 'Dùng mệnh lệnh và các từ first, next, finally để hướng dẫn từng bước.', 'Hướng dẫn một hoạt động theo nhóm và dùng câu hỏi ngắn để kiểm tra học sinh đã hiểu.'],
-        ['Asking Questions and Encouraging Answers', 'Luyện câu hỏi mở, câu hỏi tiếp nối và cách mời học sinh ít nói tham gia.', 'Đóng vai tổ chức thảo luận và cho học sinh thời gian suy nghĩ.'],
-        ['Managing Classroom Routines', 'Chia nhóm, chuyển hoạt động, nhắc thời gian và xử lý việc mất tập trung bằng lời nhắc lịch sự.', 'Mô phỏng một hoạt động theo cặp từ lúc giao nhiệm vụ đến khi thu bài.'],
-        ['Giving Feedback', 'Khen cụ thể, gợi ý sửa lỗi và hướng dẫn học sinh tự sửa.', 'Góp ý một bài nói hoặc bài viết bằng mẫu câu ngắn, dễ hiểu.']
-      ])},
-      {title: 'Trao đổi chuyên môn và dạy thử', units: sessions(8, [
-        ['Talking with Parents', 'Mô tả tiến bộ, nêu điểm cần luyện và đề xuất việc có thể làm ở nhà.', 'Đóng vai buổi trao đổi với phụ huynh và viết tin nhắn tóm tắt.'],
-        ['Working with Colleagues', 'Chia sẻ ý tưởng, đề nghị hỗ trợ, hẹn họp và xác nhận phân công.', 'Cùng chuẩn bị một hoạt động và trình bày kế hoạch cho đồng nghiệp.'],
-        ['Microteaching', 'Dạy thử một phần bài bằng tiếng Anh với mở bài, hướng dẫn, kiểm tra mức độ hiểu và phản hồi.', 'Nhận góp ý về phát âm, độ rõ của chỉ dẫn và cách tương tác, rồi thực hành lại.']
-      ])}
-    ]
+    feeSections: courseFees.conversation,
+    feeNote: 'Dấu — đánh dấu ô chưa có thông tin trong bảng English for Work. Lịch học linh động, vui lòng liên hệ trung tâm để thống nhất ngày và giờ.',
+    roadmapNote: 'Lộ trình đề xuất gồm 12 buổi mỗi tháng. Gói tháng bắt đầu với 12 buổi đầu, gói 6 tháng gồm 72 buổi và có thể điều chỉnh theo mục tiêu giảng dạy.',
+    stages: teacherRoadmap
   },
   'global-6': globalSuccess(6),
   'global-7': globalSuccess(7),
