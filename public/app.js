@@ -158,7 +158,7 @@ function courses(key) {
       <summary>${esc(stage.title)}</summary>
       <div class="stack tabs">${stage.units.map(({title,lines})=>'<details class="card"><summary>'+esc(title)+'</summary>'+list(lines)+'</details>').join('')}</div>
     </details>`).join('');
-  const table=({columns,rows},label)=>`<div class="course-compare">
+  const table=({columns,rows,classComparison},label)=>`<div class="course-compare${classComparison?' class-comparison':''}">
     <table aria-label="${esc(label)}">
       ${columns?'<thead><tr>'+columns.map(value=>'<th scope="col">'+esc(value)+'</th>').join('')+'</tr></thead>':''}
       <tbody>${rows.map(([heading,...values])=>'<tr><th scope="row">'+esc(heading)+'</th>'+

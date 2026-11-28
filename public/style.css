@@ -16,3 +16,12 @@
 .course-fees .course-compare { margin-bottom: 14px; }
 .course-fees .course-compare:last-child { margin-bottom: 0; }
 .section .fee-note { margin-top: 12px; color: var(--muted); }
+
+.class-comparison td { white-space: pre-line; }
+.class-comparison thead th:nth-child(3) { background: #fff0c7; }
+.class-comparison td + td { border-left: 1px solid var(--line); }
+.class-comparison tbody tr:nth-child(even) { background: #f7faf8; }
+@media (max-width:640px) {
+  .class-comparison th:first-child { width: 34%; }
+  .class-comparison th, .class-comparison td { padding: 8px 6px; }
+}

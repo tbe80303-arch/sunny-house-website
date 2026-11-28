@@ -108,80 +108,58 @@ export const courseFees = {
       ]
     },
     {
-      "title": "1. STANDARD CLASS",
+      "title": "So sánh Standard Class và Premium Class",
       "blocks": [
-        "Sĩ số: Tối đa 6 học viên\nThời lượng: 105 phút/buổi\nLịch học: 2 buổi/tuần",
-        "Học phí",
         {
+          "classComparison": true,
           "columns": [
-            "Gói học",
-            "Học phí"
+            "Tiêu chí",
+            "Standard Class",
+            "Premium Class"
           ],
           "rows": [
             [
-              "8 buổi",
-              "600.000đ"
+              "Sĩ số",
+              "Tối đa 6 học viên",
+              "Tối đa 3 học viên"
             ],
             [
-              "48 buổi",
-              "3.400.000đ"
+              "Thời lượng",
+              "105 phút/buổi",
+              "105 phút/buổi"
             ],
             [
-              "Học phí gốc 48 buổi",
-              "3.600.000đ"
+              "Lịch học",
+              "2 buổi/tuần",
+              "2 buổi/tuần"
             ],
-            [
-              "Tiết kiệm",
-              "200.000đ"
-            ]
-          ]
-        },
-        "Quyền lợi học viên",
-        "Sửa bài tập không giới hạn.",
-        "Hỗ trợ kèm riêng 1:1 khi cần.",
-        "Cung cấp tài liệu Global Success bổ trợ.",
-        "Tài liệu luyện tập đầy đủ 4 kỹ năng.",
-        "Đánh giá năng lực đầu vào.",
-        "Kiểm tra và đánh giá năng lực định kỳ.",
-        "Đánh giá năng lực cuối khóa.",
-        "Báo cáo tiến độ học tập cho phụ huynh."
-      ]
-    },
-    {
-      "title": "2. PREMIUM CLASS",
-      "blocks": [
-        "Sĩ số: Tối đa 3 học viên\nThời lượng: 105 phút/buổi\nLịch học: 2 buổi/tuần",
-        "Học phí",
-        {
-          "columns": [
-            "Gói học",
-            "Học phí"
-          ],
-          "rows": [
             [
               "8 buổi",
+              "600.000đ",
               "1.200.000đ"
             ],
             [
-              "48 buổi",
+              "48 buổi (ưu đãi)",
+              "3.400.000đ",
               "6.800.000đ"
             ],
             [
               "Học phí gốc 48 buổi",
+              "3.600.000đ",
               "7.200.000đ"
             ],
             [
               "Tiết kiệm",
+              "200.000đ",
               "400.000đ"
+            ],
+            [
+              "Quyền lợi học viên",
+              "Sửa bài tập không giới hạn.\nHỗ trợ kèm riêng 1:1 khi cần.\nCung cấp tài liệu Global Success bổ trợ.\nTài liệu luyện tập đầy đủ 4 kỹ năng.\nĐánh giá năng lực đầu vào.\nKiểm tra và đánh giá năng lực định kỳ.\nĐánh giá năng lực cuối khóa.\nBáo cáo tiến độ học tập cho phụ huynh.",
+              "Bao gồm toàn bộ quyền lợi của Standard Class, đồng thời được chú trọng hơn về:\nSố lượng học viên ít, tăng thời gian tương tác trực tiếp với giáo viên.\nCó nhiều cơ hội thực hành Speaking và nhận phản hồi cá nhân.\nGiáo viên theo sát khả năng tiếp thu và tiến độ của từng học viên.\nTăng cường sửa lỗi phát âm, ngữ pháp và cách diễn đạt trong quá trình giao tiếp."
             ]
           ]
-        },
-        "Quyền lợi học viên",
-        "Bao gồm toàn bộ quyền lợi của Standard Class, đồng thời được chú trọng hơn về:",
-        "Số lượng học viên ít, tăng thời gian tương tác trực tiếp với giáo viên.",
-        "Có nhiều cơ hội thực hành Speaking và nhận phản hồi cá nhân.",
-        "Giáo viên theo sát khả năng tiếp thu và tiến độ của từng học viên.",
-        "Tăng cường sửa lỗi phát âm, ngữ pháp và cách diễn đạt trong quá trình giao tiếp."
+        }
       ]
     },
     {
@@ -206,81 +184,58 @@ export const courseFees = {
       ]
     },
     {
-      "title": "1. STANDARD CLASS",
+      "title": "So sánh Standard Class và Premium Class",
       "blocks": [
-        "Sĩ số: Tối đa 6 học viên\nThời lượng: 105 phút/buổi\nLịch học: 2 buổi/tuần",
-        "Học phí",
         {
+          "classComparison": true,
           "columns": [
-            "Gói học",
-            "Học phí"
+            "Tiêu chí",
+            "Standard Class",
+            "Premium Class"
           ],
           "rows": [
             [
-              "8 buổi",
-              "624.000đ"
+              "Sĩ số",
+              "Tối đa 6 học viên",
+              "Tối đa 3 học viên"
             ],
             [
-              "48 buổi",
-              "3.744.000đ"
+              "Thời lượng",
+              "105 phút/buổi",
+              "105 phút/buổi"
             ],
             [
-              "Học phí ưu đãi gói 6 tháng",
-              "3.550.000đ"
+              "Lịch học",
+              "2 buổi/tuần",
+              "2 buổi/tuần"
             ],
-            [
-              "Tiết kiệm",
-              "194.000đ"
-            ]
-          ]
-        },
-        "Quyền lợi học viên",
-        "Sửa bài tập không giới hạn.",
-        "Hỗ trợ kèm riêng 1:1 khi cần.",
-        "Cung cấp tài liệu Global Success bổ trợ.",
-        "Tài liệu luyện tập đầy đủ 4 kỹ năng.",
-        "Đánh giá năng lực đầu vào.",
-        "Kiểm tra và đánh giá năng lực định kỳ.",
-        "Đánh giá năng lực cuối khóa.",
-        "Báo cáo tiến độ học tập cho phụ huynh."
-      ]
-    },
-    {
-      "title": "2. PREMIUM CLASS",
-      "blocks": [
-        "Sĩ số: Tối đa 3 học viên\nThời lượng: 105 phút/buổi\nLịch học: 2 buổi/tuần",
-        "Học phí",
-        {
-          "columns": [
-            "Gói học",
-            "Học phí"
-          ],
-          "rows": [
             [
               "8 buổi",
+              "624.000đ",
               "1.200.000đ"
             ],
             [
               "48 buổi",
+              "3.744.000đ",
               "7.200.000đ"
             ],
             [
               "Học phí ưu đãi gói 6 tháng",
+              "3.550.000đ",
               "6.800.000đ"
             ],
             [
               "Tiết kiệm",
+              "194.000đ",
               "400.000đ"
+            ],
+            [
+              "Quyền lợi học viên",
+              "Sửa bài tập không giới hạn.\nHỗ trợ kèm riêng 1:1 khi cần.\nCung cấp tài liệu Global Success bổ trợ.\nTài liệu luyện tập đầy đủ 4 kỹ năng.\nĐánh giá năng lực đầu vào.\nKiểm tra và đánh giá năng lực định kỳ.\nĐánh giá năng lực cuối khóa.\nBáo cáo tiến độ học tập cho phụ huynh.",
+              "Bao gồm toàn bộ quyền lợi của Standard Class, đồng thời được chú trọng hơn về:\nSố lượng học viên ít, tăng thời gian tương tác trực tiếp với giáo viên.\nCó nhiều cơ hội thực hành Speaking và nhận phản hồi cá nhân.\nGiáo viên theo sát khả năng tiếp thu và tiến độ của từng học viên.\nTăng cường sửa lỗi phát âm, ngữ pháp và cách diễn đạt.\nRèn luyện kỹ năng mô tả tranh, kể chuyện và trình bày ý kiến ở trình độ Flyers."
             ]
           ]
-        },
-        "Quyền lợi học viên",
-        "Bao gồm toàn bộ quyền lợi của Standard Class, đồng thời được chú trọng hơn về:",
-        "Số lượng học viên ít, tăng thời gian tương tác trực tiếp với giáo viên.",
-        "Có nhiều cơ hội thực hành Speaking và nhận phản hồi cá nhân.",
-        "Giáo viên theo sát khả năng tiếp thu và tiến độ của từng học viên.",
-        "Tăng cường sửa lỗi phát âm, ngữ pháp và cách diễn đạt.",
-        "Rèn luyện kỹ năng mô tả tranh, kể chuyện và trình bày ý kiến ở trình độ Flyers."
+        }
       ]
     },
     {
@@ -303,18 +258,53 @@ export const courseFees = {
       "blocks": []
     },
     {
-      "title": "1. Các gói học",
+      "title": "1. So sánh các gói học",
       "blocks": [
-        "STANDARD CLASS",
-        "Lớp tiêu chuẩn",
-        "1.000.000đ/tháng",
-        "Tối đa 6 học sinh · 8 buổi/tháng · 75 phút/buổi",
-        "Phù hợp với học sinh muốn xây dựng nền tảng tiếng Anh, học tập trong môi trường tương tác với mức học phí tiết kiệm.",
-        "PREMIUM SMALL CLASS",
-        "Lớp sĩ số nhỏ",
-        "1.500.000đ/tháng",
-        "Tối đa 3 học sinh · 8 buổi/tháng · 75 phút/buổi",
-        "Phù hợp với học sinh cần nhiều cơ hội thực hành, được giáo viên theo sát và hỗ trợ cá nhân hóa hơn."
+        {
+          "classComparison": true,
+          "columns": [
+            "Tiêu chí",
+            "Standard Class",
+            "Premium Small Class"
+          ],
+          "rows": [
+            [
+              "Hình thức lớp",
+              "Lớp tiêu chuẩn",
+              "Lớp sĩ số nhỏ"
+            ],
+            [
+              "Học phí gói tháng",
+              "1.000.000đ/tháng",
+              "1.500.000đ/tháng"
+            ],
+            [
+              "Sĩ số, số buổi và thời lượng",
+              "Tối đa 6 học sinh · 8 buổi/tháng · 75 phút/buổi",
+              "Tối đa 3 học sinh · 8 buổi/tháng · 75 phút/buổi"
+            ],
+            [
+              "Sĩ số và số buổi gói 6 tháng",
+              "6 học sinh · 48 buổi",
+              "3 học sinh · 48 buổi"
+            ],
+            [
+              "Học phí ưu đãi gói 6 tháng",
+              "5.500.000đ",
+              "8.400.000đ"
+            ],
+            [
+              "Tiết kiệm khi đăng ký 6 tháng",
+              "Tiết kiệm 500.000đ",
+              "Tiết kiệm 600.000đ"
+            ],
+            [
+              "Phù hợp với",
+              "Phù hợp với học sinh muốn xây dựng nền tảng tiếng Anh, học tập trong môi trường tương tác với mức học phí tiết kiệm.",
+              "Phù hợp với học sinh cần nhiều cơ hội thực hành, được giáo viên theo sát và hỗ trợ cá nhân hóa hơn."
+            ]
+          ]
+        }
       ]
     },
     {
@@ -422,20 +412,7 @@ export const courseFees = {
       ]
     },
     {
-      "title": "3. Ưu đãi học phí khi đăng ký 6 tháng",
-      "blocks": [
-        "STANDARD CLASS",
-        "6 học sinh · 48 buổi",
-        "5.500.000đ",
-        "Tiết kiệm 500.000đ",
-        "PREMIUM SMALL CLASS",
-        "3 học sinh · 48 buổi",
-        "8.400.000đ",
-        "Tiết kiệm 600.000đ"
-      ]
-    },
-    {
-      "title": "4. Quy định áp dụng gói 6 tháng",
+      "title": "3. Quy định áp dụng gói 6 tháng",
       "blocks": [
         "Học viên được bảo lưu khóa học tối đa 3 tháng, áp dụng một lần trong thời hạn khóa học.",
         "Học viên được chuyển nhượng khóa học cho người khác có trình độ phù hợp, sau khi được trung tâm xác nhận.",
@@ -445,7 +422,7 @@ export const courseFees = {
       ]
     },
     {
-      "title": "5. Định vị sản phẩm để tư vấn phụ huynh",
+      "title": "4. Định vị sản phẩm để tư vấn phụ huynh",
       "blocks": [
         "Standard Class: Giải pháp học tiếng Anh tiết kiệm, đầy đủ chương trình và quyền lợi học tập cơ bản.",
         "Premium Small Class: Sĩ số nhỏ, tăng cơ hội tương tác và hỗ trợ cá nhân hóa.",
