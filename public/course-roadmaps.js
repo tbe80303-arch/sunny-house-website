@@ -271,33 +271,6 @@ export const roadmaps = {
         ]
       }
     ],
-    "benefits": [
-      {
-        "title": "LỚP A – CHUYÊN SÂU",
-        "lines": [
-          "Sĩ số tối đa 3 học sinh, giáo viên có nhiều thời gian quan sát và hỗ trợ từng con.",
-          "Sửa bài tập không giới hạn, hỗ trợ con sửa lỗi và hoàn thiện bài.",
-          "Được kèm riêng 1:1 khi con chưa hiểu bài hoặc chưa theo kịp tiến độ chung.",
-          "Nhận tài liệu bổ trợ thường xuyên để ôn luyện tại nhà theo chương trình Global Success.",
-          "Tài liệu củng cố đầy đủ 4 kỹ năng: Listening, Speaking, Reading và Writing.",
-          "Tặng tài khoản website luyện tập với giao diện mô phỏng các dạng bài thi Starters, IOE và Global Success.",
-          "Được luyện tập thêm để củng cố kiến thức trên lớp và chuẩn bị cho các bài kiểm tra ở trường.",
-          "Phù hợp với: Các bé cần được quan tâm sát sao, muốn xây dựng nền tảng Cambridge Starters đồng thời củng cố kiến thức tiếng Anh trên trường."
-        ]
-      },
-      {
-        "title": "LỚP B – TIÊU CHUẨN",
-        "lines": [
-          "Sĩ số tối đa 6 học sinh, học trong môi trường nhóm nhỏ.",
-          "Sửa bài tập không giới hạn, giúp con nhận biết và khắc phục lỗi sai.",
-          "Được kèm riêng 1:1 khi chưa hiểu bài hoặc chưa theo kịp nội dung trên lớp.",
-          "Học từ vựng, ngữ pháp và thực hành 4 kỹ năng theo lộ trình Starters.",
-          "Tham gia các hoạt động tương tác, trò chơi và luyện tập giao tiếp trong lớp.",
-          "Được hướng dẫn ôn tập để ghi nhớ và vận dụng kiến thức sau mỗi chủ đề.",
-          "Phù hợp với: Các bé muốn học Cambridge Starters trong môi trường tương tác nhóm, có giáo viên theo sát và hỗ trợ khi gặp khó khăn."
-        ]
-      }
-    ],
     "assessment": [
       "1. Kiểm tra đầu vào",
       "Trước khi xếp lớp, con được đánh giá vốn từ, khả năng nghe hiểu, phản xạ nói, đọc và viết. Nhờ đó giáo viên có thể xác định con đang ở mức nào và có cần củng cố kiến thức nền tảng trước khi học hay không.",
@@ -571,28 +544,6 @@ export const roadmaps = {
           "Làm quen với các phần thi Speaking Cambridge Movers."
         ]
       }
-    ],
-    "benefits": [
-      {
-        "title": "LỚP A – NHÓM TIÊU CHUẨN",
-        "lines": [
-          "Học theo lộ trình Get Ready for Movers.",
-          "Sĩ số tối đa 8 học sinh.",
-          "Thời lượng mỗi buổi 105 phút.",
-          "Có hoạt động tương tác, thực hành giao tiếp và luyện đề.",
-          "Giáo viên theo dõi tiến độ học tập và hỗ trợ khi con gặp khó khăn."
-        ]
-      },
-      {
-        "title": "LỚP B – NHÓM CHUYÊN SÂU",
-        "lines": [
-          "Học theo lộ trình Get Ready for Movers.",
-          "Sĩ số tối đa 3 học sinh.",
-          "Thời lượng mỗi buổi 105 phút.",
-          "Giáo viên có nhiều thời gian quan sát, sửa lỗi và hỗ trợ từng học sinh.",
-          "Tăng cơ hội thực hành nói, mô tả tranh và tương tác trực tiếp."
-        ]
-      }
     ]
   },
   "flyers": {
@@ -858,31 +809,6 @@ export const roadmaps = {
           "Nói về trải nghiệm trong quá khứ và dự định tương lai.",
           "Luyện phát âm, ngữ điệu và khả năng diễn đạt tự nhiên.",
           "Thực hành các phần thi Speaking Cambridge Flyers."
-        ]
-      }
-    ],
-    "benefits": [
-      {
-        "title": "LỚP A – NHÓM TIÊU CHUẨN",
-        "lines": [
-          "Học theo lộ trình Get Ready for Flyers.",
-          "Sĩ số tối đa 8 học sinh.",
-          "Thời lượng 105 phút/buổi.",
-          "Kết hợp học kiến thức, hoạt động tương tác và thực hành 4 kỹ năng.",
-          "Giáo viên theo dõi tiến độ và hỗ trợ khi con gặp khó khăn.",
-          "Phù hợp với các bé có khả năng tự học và chủ động tham gia hoạt động nhóm."
-        ]
-      },
-      {
-        "title": "LỚP B – NHÓM CHUYÊN SÂU",
-        "lines": [
-          "Học theo cùng lộ trình Get Ready for Flyers.",
-          "Sĩ số tối đa 3 học sinh.",
-          "Thời lượng 105 phút/buổi.",
-          "Tăng thời gian thực hành Speaking cho từng học sinh.",
-          "Giáo viên có nhiều cơ hội quan sát, sửa lỗi phát âm và ngữ pháp.",
-          "Hỗ trợ sâu hơn đối với kỹ năng viết, đọc hiểu và kể chuyện.",
-          "Phù hợp với các bé cần được theo sát và có nhiều cơ hội thực hành cá nhân."
         ]
       }
     ]

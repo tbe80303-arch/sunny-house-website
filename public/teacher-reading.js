@@ -1,0 +1,21 @@
+export const dailyRoutine = [
+  "Chủ Đề 01: My Daily Routine – Thói Quen Hằng Ngày",
+  "Tiếng Việt:",
+  "Mỗi ngày, tôi thường thức dậy lúc sáu giờ sáng. Sau khi thức dậy, tôi đánh răng, rửa mặt và tập thể dục khoảng mười lăm phút. Sau đó, tôi ăn sáng và chuẩn bị đi học hoặc đi làm. Buổi sáng là khoảng thời gian bận rộn nhất trong ngày của tôi. Buổi trưa, tôi thường ăn cơm và nghỉ ngơi một chút. Buổi chiều, tôi hoàn thành những công việc còn lại. Buổi tối, tôi ăn tối cùng gia đình, xem một chút chương trình yêu thích và chuẩn bị cho ngày hôm sau. Tôi thường đi ngủ lúc mười một giờ. Mặc dù lịch trình không quá đặc biệt, tôi cảm thấy việc duy trì thói quen hằng ngày giúp cuộc sống trở nên có tổ chức hơn.",
+  "Từ gợi ý:",
+  "thói quen: routine",
+  "thức dậy: wake up",
+  "đánh răng: brush my teeth",
+  "rửa mặt: wash my face",
+  "tập thể dục: exercise",
+  "chuẩn bị: prepare",
+  "bận rộn: busy",
+  "nghỉ ngơi: take a rest",
+  "hoàn thành: finish",
+  "công việc: tasks",
+  "chương trình yêu thích: favorite show",
+  "duy trì: maintain",
+  "lịch trình: schedule",
+  "có tổ chức: organized",
+  "ngày hôm sau: the next day"
+];
