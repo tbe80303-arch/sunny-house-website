@@ -17,11 +17,11 @@
 .course-fees .course-compare:last-child { margin-bottom: 0; }
 .section .fee-note { margin-top: 12px; color: var(--muted); }
 
-.course-fees .course-compare td { white-space: pre-line; }
-.course-fees .course-compare thead th:nth-child(3) { background: #fff0c7; }
-.course-fees .course-compare td + td { border-left: 1px solid var(--line); }
-.course-fees .course-compare tbody tr:nth-child(even) { background: #f7faf8; }
+.class-comparison td { white-space: pre-line; }
+.class-comparison thead th:nth-child(3) { background: #fff0c7; }
+.class-comparison td + td { border-left: 1px solid var(--line); }
+.class-comparison tbody tr:nth-child(even) { background: #f7faf8; }
 @media (max-width:640px) {
-  .course-fees .course-compare th:first-child { width: 34%; }
-  .course-fees .course-compare th, .course-fees .course-compare td { padding: 8px 6px; }
+  .class-comparison th:first-child { width: 34%; }
+  .class-comparison th, .class-comparison td { padding: 8px 6px; }
 }

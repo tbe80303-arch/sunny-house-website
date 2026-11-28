@@ -111,6 +111,7 @@ export const courseFees = {
       "title": "So sánh Standard Class và Premium Class",
       "blocks": [
         {
+          "classComparison": true,
           "columns": [
             "Tiêu chí",
             "Standard Class",
@@ -186,6 +187,7 @@ export const courseFees = {
       "title": "So sánh Standard Class và Premium Class",
       "blocks": [
         {
+          "classComparison": true,
           "columns": [
             "Tiêu chí",
             "Standard Class",
@@ -259,6 +261,7 @@ export const courseFees = {
       "title": "1. So sánh các gói học",
       "blocks": [
         {
+          "classComparison": true,
           "columns": [
             "Tiêu chí",
             "Standard Class",
